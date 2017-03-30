@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/job-scheduler.iml" filepath="$PROJECT_DIR$/job-scheduler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/job-scheduler-common/job-scheduler-common.iml" filepath="$PROJECT_DIR$/job-scheduler-common/job-scheduler-common.iml" />
+    </modules>
+  </component>
+</project>
