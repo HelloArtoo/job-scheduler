@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.jd.framework.job.constant.JobProperties;
+import com.jd.framework.job.executor.handler.JobProperties;
 
 /**
  * 
@@ -27,7 +27,7 @@ import com.jd.framework.job.constant.JobProperties;
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class JobCoreConfiguration {
+public final class JobCoreConfiguration {
 
 	private final String jobName;
 
@@ -39,8 +39,10 @@ public class JobCoreConfiguration {
 
 	private final String jobParameter;
 
+	/**是否失效转移*/
 	private final boolean failover;
 
+	/**是否执行错失的任务*/
 	private final boolean misfire;
 
 	private final String description;
@@ -54,7 +56,7 @@ public class JobCoreConfiguration {
 	 *            作业名称
 	 * @param cron
 	 *            作业启动时间的cron表达式
-	 * @param shardingTotalCount
+	 * @param segmentTotalCount
 	 *            作业分片总数
 	 * @return 简单作业配置构建器
 	 */
@@ -92,7 +94,7 @@ public class JobCoreConfiguration {
 		 * 0=a,1=b,2=c
 		 * </p>
 		 * 
-		 * @param shardingItemParameters
+		 * @param segmentItemParameters
 		 *            分片序列号和个性化参数对照表
 		 * 
 		 * @return 作业配置构建器

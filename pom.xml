@@ -10,6 +10,9 @@
     <modules>
         <module>job-scheduler-common</module>
         <module>job-scheduler-core</module>
+        <module>job-scheduler-spring</module>
+        <module>job-scheduler-demo</module>
+        <module>job-scheduler-console</module>
     </modules>
 
     <properties>

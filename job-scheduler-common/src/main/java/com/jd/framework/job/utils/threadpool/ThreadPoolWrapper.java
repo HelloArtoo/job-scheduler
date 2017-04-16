@@ -28,15 +28,14 @@ import com.google.common.util.concurrent.MoreExecutors;
  * @version 1.0, 2017-4-4
  */
 public class ThreadPoolWrapper {
+
 	private final ThreadPoolExecutor threadPoolExecutor;
 	private final BlockingQueue<Runnable> workQueue;
 
 	public ThreadPoolWrapper(final String namingPattern, final int threadSize) {
 		workQueue = new LinkedBlockingQueue<>();
-		threadPoolExecutor = new ThreadPoolExecutor(threadSize, threadSize, 5L,
-				TimeUnit.MINUTES, workQueue,
-				new BasicThreadFactory.Builder().namingPattern(
-						Joiner.on("-").join(namingPattern, "%s")).build());
+		threadPoolExecutor = new ThreadPoolExecutor(threadSize, threadSize, 5L, TimeUnit.MINUTES, workQueue,
+				new BasicThreadFactory.Builder().namingPattern(Joiner.on("-").join(namingPattern, "%s")).build());
 		threadPoolExecutor.allowCoreThreadTimeOut(true);
 	}
 
@@ -46,8 +45,7 @@ public class ThreadPoolWrapper {
 	 * @return 线程池服务对象
 	 */
 	public ExecutorService createExecutorService() {
-		return MoreExecutors.listeningDecorator(MoreExecutors
-				.getExitingExecutorService(threadPoolExecutor));
+		return MoreExecutors.listeningDecorator(MoreExecutors.getExitingExecutorService(threadPoolExecutor));
 	}
 
 	public boolean isShutdown() {

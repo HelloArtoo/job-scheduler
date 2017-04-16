@@ -1,6 +1,7 @@
 package com.jd.framework.job.api;
 
-import com.jd.framework.job.executor.SegmentContexts;
+import com.jd.framework.job.executor.context.SegmentContexts;
+
 import lombok.Getter;
 import lombok.ToString;
 

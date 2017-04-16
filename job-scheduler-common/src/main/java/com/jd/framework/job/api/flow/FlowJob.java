@@ -1,6 +1,6 @@
 package com.jd.framework.job.api.flow;
 
-import com.jd.framework.job.api.DistributedJob;
+import com.jd.framework.job.api.ScheduleJob;
 import com.jd.framework.job.api.SegmentContext;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  * DATE: 17/3/31
  * VERSION: 1.0
  */
-public interface FlowJob<T> extends DistributedJob{
+public interface FlowJob<T> extends ScheduleJob{
 
     /**
      * 抓取所需任务数据

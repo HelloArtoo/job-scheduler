@@ -157,6 +157,7 @@ public class ZookeeperRegistryCenter implements CoordinatorRegistryCenter {
 
 	@Override
 	public String get(final String key) {
+		//tree cache缓存节点
 		TreeCache cache = this.findTreeCache(key);
 
 		if (null == cache) {

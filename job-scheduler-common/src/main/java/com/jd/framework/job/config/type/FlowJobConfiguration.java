@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.jd.framework.job.config.JobTypeConfiguration;
 import com.jd.framework.job.config.core.JobCoreConfiguration;
-import com.jd.framework.job.constant.JobType;
+import com.jd.framework.job.constant.job.JobType;
 
 /**
  * 

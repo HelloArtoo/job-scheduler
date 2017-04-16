@@ -1,6 +1,6 @@
 package com.jd.framework.job.api.simple;
 
-import com.jd.framework.job.api.DistributedJob;
+import com.jd.framework.job.api.ScheduleJob;
 import com.jd.framework.job.api.SegmentContext;
 
 /**
@@ -9,7 +9,7 @@ import com.jd.framework.job.api.SegmentContext;
  * DATE: 17/3/31
  * VERSION: 1.0
  */
-public interface SimpleJob extends DistributedJob {
+public interface SimpleJob extends ScheduleJob {
 
     /**
      * 执行作业

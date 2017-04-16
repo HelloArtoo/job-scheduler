@@ -10,7 +10,7 @@
 package com.jd.framework.job.config;
 
 import com.jd.framework.job.config.core.JobCoreConfiguration;
-import com.jd.framework.job.constant.JobType;
+import com.jd.framework.job.constant.job.JobType;
 
 /**
  * 
