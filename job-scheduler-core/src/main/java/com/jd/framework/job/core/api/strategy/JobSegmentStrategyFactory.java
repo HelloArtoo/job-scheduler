@@ -20,11 +20,11 @@ import com.jd.framework.job.exception.JobConfigurationException;
 public class JobSegmentStrategyFactory {
 
 	/**
-	 * 获取 作业分片策略实例.
+	 * 获取 作业分段策略实例.
 	 * 
 	 * @param jobSegmentStrategyClassName
-	 *            作业分片策略类名
-	 * @return 作业分片策略实例
+	 *            作业分段策略类名 
+	 * @return 作业分段策略实例
 	 */
 	public static JobSegmentStrategy getStrategy(final String jobSegmentStrategyClassName) {
 		if (Strings.isNullOrEmpty(jobSegmentStrategyClassName)) {

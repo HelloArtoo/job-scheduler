@@ -33,10 +33,10 @@ public class LeaderElectionService {
 
 	private final ServerService serverService;
 
-	private final JobNodeStorageHelper jobNodeStorageHelper;
+	private final JobNodeStorageHelper jobNodeStorage;
 
 	public LeaderElectionService(final CoordinatorRegistryCenter regCenter, final String jobName) {
-		jobNodeStorageHelper = new JobNodeStorageHelper(regCenter, jobName);
+		jobNodeStorage = new JobNodeStorageHelper(regCenter, jobName);
 		serverService = new ServerService(regCenter, jobName);
 	}
 
@@ -44,14 +44,14 @@ public class LeaderElectionService {
 	 * 强制选举主节点.
 	 */
 	public void leaderForceElection() {
-		jobNodeStorageHelper.executeInLeader(ElectionNodeHelper.LATCH, new LeaderElectionExecutionCallback(true));
+		jobNodeStorage.executeInLeader(ElectionNodeHelper.LATCH, new LeaderElectionExecutionCallback(true));
 	}
 
 	/**
 	 * 选举主节点.
 	 */
 	public void leaderElection() {
-		jobNodeStorageHelper.executeInLeader(ElectionNodeHelper.LATCH, new LeaderElectionExecutionCallback(false));
+		jobNodeStorage.executeInLeader(ElectionNodeHelper.LATCH, new LeaderElectionExecutionCallback(false));
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class LeaderElectionService {
 			BlockUtils.waitingShortTime();
 			leaderElection();
 		}
-		return localHostIp.equals(jobNodeStorageHelper.getJobNodeData(ElectionNodeHelper.LEADER_HOST));
+		return localHostIp.equals(jobNodeStorage.getJobNodeData(ElectionNodeHelper.LEADER_HOST));
 	}
 
 	/**
@@ -83,14 +83,14 @@ public class LeaderElectionService {
 	 * @return 是否已经有主节点
 	 */
 	public boolean hasLeader() {
-		return jobNodeStorageHelper.isJobNodeExisted(ElectionNodeHelper.LEADER_HOST);
+		return jobNodeStorage.isJobNodeExisted(ElectionNodeHelper.LEADER_HOST);
 	}
 
 	/**
 	 * 删除主节点供重新选举.
 	 */
 	public void removeLeader() {
-		jobNodeStorageHelper.removeJobNodeIfExisted(ElectionNodeHelper.LEADER_HOST);
+		jobNodeStorage.removeJobNodeIfExisted(ElectionNodeHelper.LEADER_HOST);
 	}
 
 	@RequiredArgsConstructor
@@ -101,10 +101,10 @@ public class LeaderElectionService {
 
 		@Override
 		public void execute() {
-			if (!jobNodeStorageHelper.isJobNodeExisted(ElectionNodeHelper.LEADER_HOST)
+			if (!jobNodeStorage.isJobNodeExisted(ElectionNodeHelper.LEADER_HOST)
 					&& (isForceElect || serverService.isAvailableServer(localHostService.getIp()))) {
 				// 强制写入主节点数据
-				jobNodeStorageHelper.fillEphemeralJobNode(ElectionNodeHelper.LEADER_HOST, localHostService.getIp());
+				jobNodeStorage.fillEphemeralJobNode(ElectionNodeHelper.LEADER_HOST, localHostService.getIp());
 			}
 		}
 	}

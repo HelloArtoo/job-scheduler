@@ -19,17 +19,14 @@ import com.jd.framework.job.utils.threadpool.ThreadPoolWrapper;
  * @author Rong Hu
  * @version 1.0, 2017-4-4
  */
-public final class DefaultExecutorServiceHandler implements
-		ExecutorServiceHandler {
+public final class DefaultExecutorServiceHandler implements ExecutorServiceHandler {
 
 	/** 线程池大小 */
-	private static final int THREAD_SIZE = Runtime.getRuntime()
-			.availableProcessors() * 2;
+	private static final int THREAD_SIZE = Runtime.getRuntime().availableProcessors() * 2;
 
 	@Override
 	public ExecutorService createExecutorService(final String jobName) {
-		return new ThreadPoolWrapper("inner-job-" + jobName, THREAD_SIZE)
-				.createExecutorService();
+		return new ThreadPoolWrapper("scheduler-inner-job-" + jobName, THREAD_SIZE).createExecutorService();
 	}
 
 }

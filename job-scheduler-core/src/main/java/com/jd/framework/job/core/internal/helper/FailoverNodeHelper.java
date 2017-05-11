@@ -45,11 +45,11 @@ public final class FailoverNodeHelper {
 	}
 
 	/**
-	 * 根据失效转移执行路径获取分片项.
+	 * 根据失效转移执行路径获取分段项.
 	 * 
 	 * @param path
 	 *            失效转移执行路径
-	 * @return 分片项, 不是失效转移执行路径获则返回null
+	 * @return 分段项, 不是失效转移执行路径获则返回null
 	 */
 	public Integer getItemByExecutionFailoverPath(final String path) {
 		if (!isFailoverPath(path)) {

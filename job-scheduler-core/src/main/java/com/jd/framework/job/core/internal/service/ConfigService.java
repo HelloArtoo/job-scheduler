@@ -27,28 +27,27 @@ import com.jd.framework.job.regcenter.api.CoordinatorRegistryCenter;
  */
 public class ConfigService {
 
-	private final JobNodeStorageHelper jobNodeStorageHelper;
+	private final JobNodeStorageHelper jobNodeStorage;
 
 	public ConfigService(final CoordinatorRegistryCenter regCenter, final String jobName) {
-		jobNodeStorageHelper = new JobNodeStorageHelper(regCenter, jobName);
+		jobNodeStorage = new JobNodeStorageHelper(regCenter, jobName);
 	}
 
 	/**
 	 * 读取作业配置
 	 * 
 	 * @param fromCache
-	 * @return
-	 * @author Rong Hu
+	 * @return FactJobConfiguration
 	 */
 	public FactJobConfiguration load(final boolean fromCache) {
 		String result;
 		if (fromCache) {
-			result = jobNodeStorageHelper.getJobNodeData(ConfigNodeHelper.ROOT);
+			result = jobNodeStorage.getJobNodeData(ConfigNodeHelper.ROOT);
 			if (null == result) {
-				result = jobNodeStorageHelper.getJobNodeDataDirectly(ConfigNodeHelper.ROOT);
+				result = jobNodeStorage.getJobNodeDataDirectly(ConfigNodeHelper.ROOT);
 			}
 		} else {
-			result = jobNodeStorageHelper.getJobNodeDataDirectly(ConfigNodeHelper.ROOT);
+			result = jobNodeStorage.getJobNodeDataDirectly(ConfigNodeHelper.ROOT);
 		}
 		return FactJobConfigGsonFactory.fromJson(result);
 	}
@@ -61,8 +60,8 @@ public class ConfigService {
 	 */
 	public void persist(final FactJobConfiguration factJobConfig) {
 		checkConflictJob(factJobConfig);
-		if (!jobNodeStorageHelper.isJobNodeExisted(ConfigNodeHelper.ROOT) || factJobConfig.isOverwrite()) {
-			jobNodeStorageHelper.replaceJobNode(ConfigNodeHelper.ROOT, FactJobConfigGsonFactory.toJson(factJobConfig));
+		if (!jobNodeStorage.isJobNodeExisted(ConfigNodeHelper.ROOT) || factJobConfig.isOverwrite()) {
+			jobNodeStorage.replaceJobNode(ConfigNodeHelper.ROOT, FactJobConfigGsonFactory.toJson(factJobConfig));
 		}
 	}
 
@@ -79,14 +78,14 @@ public class ConfigService {
 	}
 
 	private Optional<FactJobConfiguration> find() {
-		if (!jobNodeStorageHelper.isJobNodeExisted(ConfigNodeHelper.ROOT)) {
+		if (!jobNodeStorage.isJobNodeExisted(ConfigNodeHelper.ROOT)) {
 			return Optional.absent();
 		}
-		FactJobConfiguration result = FactJobConfigGsonFactory.fromJson(jobNodeStorageHelper
+		FactJobConfiguration result = FactJobConfigGsonFactory.fromJson(jobNodeStorage
 				.getJobNodeDataDirectly(ConfigNodeHelper.ROOT));
 		if (null == result) {
 			// TODO 应该删除整个job node,并非仅仅删除config node
-			jobNodeStorageHelper.removeJobNodeIfExisted(ConfigNodeHelper.ROOT);
+			jobNodeStorage.removeJobNodeIfExisted(ConfigNodeHelper.ROOT);
 		}
 		return Optional.fromNullable(result);
 	}
@@ -102,7 +101,7 @@ public class ConfigService {
 		if (-1 == maxTimeDiffSeconds) {
 			return;
 		}
-		long timeDiff = Math.abs(System.currentTimeMillis() - jobNodeStorageHelper.getRegistryCenterTime());
+		long timeDiff = Math.abs(System.currentTimeMillis() - jobNodeStorage.getRegistryCenterTime());
 		if (timeDiff > maxTimeDiffSeconds * 1000L) {
 			throw new JobExecutionEnvironmentException(
 					"Time different between job server and register center exceed '%s' seconds, max time different is '%s' seconds.",

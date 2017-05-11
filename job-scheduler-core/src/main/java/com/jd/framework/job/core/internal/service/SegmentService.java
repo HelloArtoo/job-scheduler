@@ -41,6 +41,7 @@ import com.jd.framework.job.utils.segment.SegmentItems;
  */
 @Slf4j
 public class SegmentService {
+	
 	private final String jobName;
 
 	private final JobNodeStorageHelper jobNodeStorage;

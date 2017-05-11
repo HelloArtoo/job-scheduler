@@ -18,7 +18,7 @@ package com.jd.framework.job.core.internal.helper;
  */
 public final class ElectionNodeHelper {
 	/**
-	 * Elastic Job主服务器根节点.
+	 * Job Scheduler 主服务器根节点.
 	 */
 	public static final String ROOT = "leader";
 

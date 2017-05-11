@@ -52,13 +52,13 @@ public class RdbJobEventStorageTest {
 	@Test
 	public void assertAddJobStatusTraceEvent() throws SQLException {
 		assertTrue(storage.addJobStatusTraceEvent(new JobStatusTraceEvent("test_job", "fake_task_id", "fake_slave_id",
-				Source.LITE_EXECUTOR, ExecutionType.READY, "0", State.TASK_RUNNING, "message is empty.")));
+				Source.FACT_EXECUTOR, ExecutionType.READY, "0", State.TASK_RUNNING, "message is empty.")));
 	}
 
 	@Test
 	public void assertAddJobStatusTraceEventWhenFailoverWithTaskStagingState() throws SQLException {
 		JobStatusTraceEvent jobStatusTraceEvent = new JobStatusTraceEvent("test_job", "fake_failover_task_id",
-				"fake_slave_id", Source.LITE_EXECUTOR, ExecutionType.FAILOVER, "0", State.TASK_STAGING,
+				"fake_slave_id", Source.FACT_EXECUTOR, ExecutionType.FAILOVER, "0", State.TASK_STAGING,
 				"message is empty.");
 		jobStatusTraceEvent.setOriginalTaskId("original_fake_failover_task_id");
 		assertThat(storage.getJobStatusTraceEvents("fake_failover_task_id").size(), is(0));
@@ -69,12 +69,12 @@ public class RdbJobEventStorageTest {
 	@Test
 	public void assertAddJobStatusTraceEventWhenFailoverWithTaskFailedState() throws SQLException {
 		JobStatusTraceEvent stagingJobStatusTraceEvent = new JobStatusTraceEvent("test_job",
-				"fake_failed_failover_task_id", "fake_slave_id", Source.LITE_EXECUTOR, ExecutionType.FAILOVER, "0",
+				"fake_failed_failover_task_id", "fake_slave_id", Source.FACT_EXECUTOR, ExecutionType.FAILOVER, "0",
 				State.TASK_STAGING, "message is empty.");
 		stagingJobStatusTraceEvent.setOriginalTaskId("original_fake_failed_failover_task_id");
 		storage.addJobStatusTraceEvent(stagingJobStatusTraceEvent);
 		JobStatusTraceEvent failedJobStatusTraceEvent = new JobStatusTraceEvent("test_job",
-				"fake_failed_failover_task_id", "fake_slave_id", Source.LITE_EXECUTOR, ExecutionType.FAILOVER, "0",
+				"fake_failed_failover_task_id", "fake_slave_id", Source.FACT_EXECUTOR, ExecutionType.FAILOVER, "0",
 				State.TASK_FAILED, "message is empty.");
 		storage.addJobStatusTraceEvent(failedJobStatusTraceEvent);
 		List<JobStatusTraceEvent> jobStatusTraceEvents = storage

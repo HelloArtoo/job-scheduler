@@ -21,10 +21,10 @@ public final class ConfigNodeHelper {
 	public static final String ROOT = "config";
 
 	/** JobNode Helper */
-	private final JobNodePathHelper jobNodePathHelper;
+	private final JobNodePathHelper jobNodePath;
 
 	public ConfigNodeHelper(final String jobName) {
-		jobNodePathHelper = new JobNodePathHelper(jobName);
+		jobNodePath = new JobNodePathHelper(jobName);
 	}
 
 	/**
@@ -35,6 +35,6 @@ public final class ConfigNodeHelper {
 	 * @return 是否为作业配置根路径
 	 */
 	public boolean isConfigPath(final String path) {
-		return jobNodePathHelper.getConfigNodePath().equals(path);
+		return jobNodePath.getConfigNodePath().equals(path);
 	}
 }

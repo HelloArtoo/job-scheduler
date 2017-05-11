@@ -74,7 +74,7 @@ public class SchedulerFacade {
 	/**
 	 * 注册Fact-Job启动信息.
 	 * 
-	 * @param liteJobConfig
+	 * @param factJobConfig
 	 *            作业配置
 	 */
 	public void registerStartUpInfo(final FactJobConfiguration factJobConfig) {

@@ -63,6 +63,6 @@ public class JobStatusTraceEvent implements JobEvent {
 	}
 
 	public enum Source {
-		CLOUD_SCHEDULER, CLOUD_EXECUTOR, LITE_EXECUTOR
+		CLOUD_SCHEDULER, CLOUD_EXECUTOR, FACT_EXECUTOR
 	}
 }

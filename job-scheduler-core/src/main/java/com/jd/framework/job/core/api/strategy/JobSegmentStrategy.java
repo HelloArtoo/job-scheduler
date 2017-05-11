@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public interface JobSegmentStrategy {
 	/**
-	 * 进行作业分段.
+	 * 进行作业分段切割.
 	 * 
 	 * @param serversList
 	 *            所有参与分段的服务器列表

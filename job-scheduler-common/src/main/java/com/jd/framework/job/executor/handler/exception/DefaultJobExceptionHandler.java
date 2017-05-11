@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
- * 使用 {@link handleException} 异常处理
+ * 使用 {@link #handleException(String, Throwable)} 异常处理
  * 
  * @author Rong Hu
  * @version 1.0, 2017-4-4

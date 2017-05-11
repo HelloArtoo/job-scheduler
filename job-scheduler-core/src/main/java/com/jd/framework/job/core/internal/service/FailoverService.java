@@ -52,7 +52,7 @@ public class FailoverService {
 	}
 
 	/**
-	 * 设置失效的分片项标记.
+	 * 设置失效的分段项标记.
 	 * 
 	 * @param item
 	 *            崩溃的作业项
@@ -83,10 +83,10 @@ public class FailoverService {
 	}
 
 	/**
-	 * 更新执行完毕失效转移的分片项状态.
+	 * 更新执行完毕失效转移的分段项状态.
 	 * 
 	 * @param items
-	 *            执行完毕失效转移的分片项集合
+	 *            执行完毕失效转移的分段项集合
 	 */
 	public void updateFailoverComplete(final Collection<Integer> items) {
 		for (int each : items) {

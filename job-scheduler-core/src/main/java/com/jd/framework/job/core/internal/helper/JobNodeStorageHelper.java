@@ -21,8 +21,8 @@ import org.apache.curator.framework.state.ConnectionStateListener;
 import com.jd.framework.job.core.internal.callback.LeaderExecutionCallback;
 import com.jd.framework.job.core.internal.callback.TransactionExecutionCallback;
 import com.jd.framework.job.exception.JobSystemException;
-import com.jd.framework.job.exception.handler.RegExceptionHandler;
 import com.jd.framework.job.regcenter.api.CoordinatorRegistryCenter;
+import com.jd.framework.job.regcenter.exception.RegExceptionHandler;
 
 /**
  * 
@@ -31,7 +31,8 @@ import com.jd.framework.job.regcenter.api.CoordinatorRegistryCenter;
  * @author Rong Hu
  * @version 1.0, 2017-4-6
  */
-public final class JobNodeStorageHelper {
+public class JobNodeStorageHelper {
+	
 	private final CoordinatorRegistryCenter regCenter;
 
 	private final String jobName;

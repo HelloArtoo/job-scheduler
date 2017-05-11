@@ -37,13 +37,13 @@ import org.apache.zookeeper.data.Stat;
 import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.jd.framework.job.exception.handler.RegExceptionHandler;
 import com.jd.framework.job.regcenter.api.CoordinatorRegistryCenter;
 import com.jd.framework.job.regcenter.conf.ZookeeperConfiguration;
+import com.jd.framework.job.regcenter.exception.RegExceptionHandler;
 
 /**
  * 
- * This class is used for ...
+ * 基于zookeeper的注册中心
  * 
  * @author Rong Hu
  * @version 1.0, 2017-4-3
@@ -55,7 +55,7 @@ public class ZookeeperRegistryCenter implements CoordinatorRegistryCenter {
 	/**
 	 * zk配置
 	 */
-	@Getter(AccessLevel.PROTECTED)
+	@Getter(AccessLevel.PUBLIC)
 	private ZookeeperConfiguration zkConfig;
 	/** 连接本地缓存 */
 	private final Map<String, TreeCache> caches = new HashMap<>();
@@ -69,18 +69,13 @@ public class ZookeeperRegistryCenter implements CoordinatorRegistryCenter {
 
 	@Override
 	public void init() {
-		log.debug(
-				"job-scheduler: zookeeper registry center init, the server list :{}",
-				zkConfig.getServerLists());
+		log.debug("job-scheduler: zookeeper registry center init, the server list :{}", zkConfig.getServerLists());
 		CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory
 				.builder()
 				.connectString(zkConfig.getServerLists())
 				.retryPolicy(
-						new ExponentialBackoffRetry(zkConfig
-								.getBaseSleepTimeMilliseconds(), zkConfig
-								.getMaxRetries(), zkConfig
-								.getMaxSleepTimeMilliseconds()))
-				.namespace(zkConfig.getNamespace());
+						new ExponentialBackoffRetry(zkConfig.getBaseSleepTimeMilliseconds(), zkConfig.getMaxRetries(),
+								zkConfig.getMaxSleepTimeMilliseconds())).namespace(zkConfig.getNamespace());
 
 		// session timeout
 		if (0 != zkConfig.getSessionTimeoutMilliseconds()) {
@@ -89,26 +84,23 @@ public class ZookeeperRegistryCenter implements CoordinatorRegistryCenter {
 
 		// connection timeout
 		if (0 != zkConfig.getConnectionTimeoutMilliseconds()) {
-			builder.connectionTimeoutMs(zkConfig
-					.getConnectionTimeoutMilliseconds());
+			builder.connectionTimeoutMs(zkConfig.getConnectionTimeoutMilliseconds());
 		}
 
 		// digest
 		if (!Strings.isNullOrEmpty(zkConfig.getDigest())) {
-			builder.authorization(DIGEST,
-					zkConfig.getDigest().getBytes(Charsets.UTF_8)).aclProvider(
-					new ACLProvider() {
+			builder.authorization(DIGEST, zkConfig.getDigest().getBytes(Charsets.UTF_8)).aclProvider(new ACLProvider() {
 
-						@Override
-						public List<ACL> getDefaultAcl() {
-							return ZooDefs.Ids.CREATOR_ALL_ACL;
-						}
+				@Override
+				public List<ACL> getDefaultAcl() {
+					return ZooDefs.Ids.CREATOR_ALL_ACL;
+				}
 
-						@Override
-						public List<ACL> getAclForPath(final String path) {
-							return ZooDefs.Ids.CREATOR_ALL_ACL;
-						}
-					});
+				@Override
+				public List<ACL> getAclForPath(final String path) {
+					return ZooDefs.Ids.CREATOR_ALL_ACL;
+				}
+			});
 		}
 
 		client = builder.build();
@@ -116,9 +108,8 @@ public class ZookeeperRegistryCenter implements CoordinatorRegistryCenter {
 
 		// handle time block
 		try {
-			if (!client.blockUntilConnected(
-					zkConfig.getMaxSleepTimeMilliseconds()
-							* zkConfig.getMaxRetries(), TimeUnit.MILLISECONDS)) {
+			if (!client.blockUntilConnected(zkConfig.getMaxSleepTimeMilliseconds() * zkConfig.getMaxRetries(),
+					TimeUnit.MILLISECONDS)) {
 				client.close();
 				throw new KeeperException.OperationTimeoutException();
 			}
@@ -157,7 +148,7 @@ public class ZookeeperRegistryCenter implements CoordinatorRegistryCenter {
 
 	@Override
 	public String get(final String key) {
-		//tree cache缓存节点
+		// tree cache缓存节点
 		TreeCache cache = this.findTreeCache(key);
 
 		if (null == cache) {
@@ -166,8 +157,7 @@ public class ZookeeperRegistryCenter implements CoordinatorRegistryCenter {
 
 		ChildData result = cache.getCurrentData(key);
 		if (null != result) {
-			return null == result.getData() ? null : new String(
-					result.getData(), Charsets.UTF_8);
+			return null == result.getData() ? null : new String(result.getData(), Charsets.UTF_8);
 		}
 
 		return getDirectly(key);
@@ -197,8 +187,7 @@ public class ZookeeperRegistryCenter implements CoordinatorRegistryCenter {
 
 		try {
 			if (!isExisted(key)) {
-				client.create().creatingParentsIfNeeded()
-						.withMode(CreateMode.PERSISTENT)
+				client.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT)
 						.forPath(key, value.getBytes(Charsets.UTF_8));
 			} else {
 				this.update(key, value);
@@ -211,9 +200,8 @@ public class ZookeeperRegistryCenter implements CoordinatorRegistryCenter {
 	@Override
 	public void update(final String key, final String value) {
 		try {
-			client.inTransaction().check().forPath(key).and().setData()
-					.forPath(key, value.getBytes(Charsets.UTF_8)).and()
-					.commit();
+			client.inTransaction().check().forPath(key).and().setData().forPath(key, value.getBytes(Charsets.UTF_8))
+					.and().commit();
 		} catch (final Exception e) {
 			RegExceptionHandler.handleException(e);
 		}
@@ -233,8 +221,8 @@ public class ZookeeperRegistryCenter implements CoordinatorRegistryCenter {
 	public long getRegistryCenterTime(final String key) {
 		long rst = 0L;
 		try {
-			String forPath = client.create().creatingParentsIfNeeded()
-					.withMode(CreateMode.EPHEMERAL_SEQUENTIAL).forPath(key);
+			String forPath = client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
+					.forPath(key);
 			rst = client.checkExists().forPath(forPath).getCtime();
 		} catch (final Exception e) {
 			RegExceptionHandler.handleException(e);
@@ -278,8 +266,7 @@ public class ZookeeperRegistryCenter implements CoordinatorRegistryCenter {
 	@Override
 	public int getNumChildren(final String key) {
 		try {
-			Stat exists = client.getZookeeperClient().getZooKeeper()
-					.exists(getNameSpace() + key, false);
+			Stat exists = client.getZookeeperClient().getZooKeeper().exists(getNameSpace() + key, false);
 			if (null != exists) {
 				return exists.getNumChildren();
 			}
@@ -293,8 +280,7 @@ public class ZookeeperRegistryCenter implements CoordinatorRegistryCenter {
 	/**
 	 * 命名空间
 	 * 
-	 * @return
-	 * @author Rong Hu
+	 * @return String
 	 */
 	private String getNameSpace() {
 		String result = this.getZkConfig().getNamespace();
@@ -307,8 +293,7 @@ public class ZookeeperRegistryCenter implements CoordinatorRegistryCenter {
 			if (isExisted(key)) {
 				client.delete().deletingChildrenIfNeeded().forPath(key);
 			}
-			client.create().creatingParentsIfNeeded()
-					.withMode(CreateMode.EPHEMERAL)
+			client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL)
 					.forPath(key, value.getBytes(Charsets.UTF_8));
 		} catch (final Exception e) {
 			RegExceptionHandler.handleException(e);
@@ -319,8 +304,7 @@ public class ZookeeperRegistryCenter implements CoordinatorRegistryCenter {
 	public String persistSequential(final String key, final String value) {
 
 		try {
-			return client.create().creatingParentsIfNeeded()
-					.withMode(CreateMode.PERSISTENT_SEQUENTIAL)
+			return client.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL)
 					.forPath(key, value.getBytes(Charsets.UTF_8));
 		} catch (final Exception e) {
 			RegExceptionHandler.handleException(e);
@@ -332,8 +316,7 @@ public class ZookeeperRegistryCenter implements CoordinatorRegistryCenter {
 	@Override
 	public void persistEphemeralSequential(final String key) {
 		try {
-			client.create().creatingParentsIfNeeded()
-					.withMode(CreateMode.EPHEMERAL_SEQUENTIAL).forPath(key);
+			client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL_SEQUENTIAL).forPath(key);
 		} catch (final Exception e) {
 			RegExceptionHandler.handleException(e);
 		}

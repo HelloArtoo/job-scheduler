@@ -7,10 +7,11 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>job-scheduler-core</artifactId>
-	<name>job-scheduler-core</name>
+	<name>${project.artifactId}</name>
 	<description>core module</description>
 
 	<dependencies>
+		
 		<dependency>
 			<groupId>com.jd</groupId>
 			<artifactId>job-scheduler-common</artifactId>

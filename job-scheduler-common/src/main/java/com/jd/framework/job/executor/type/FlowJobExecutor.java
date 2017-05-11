@@ -38,9 +38,9 @@ public class FlowJobExecutor extends AbstractJobExecutor {
 	 */
 	@Override
 	protected void process(SegmentContext segmentContext) {
-		FlowJobConfiguration dataflowConfig = (FlowJobConfiguration) getJobRootConfig().getTypeConfig();
+		FlowJobConfiguration flowConfig = (FlowJobConfiguration) getJobRootConfig().getTypeConfig();
 		// 流式处理，fetchData不为空则继续执行
-		if (dataflowConfig.isStreamingProcess()) {
+		if (flowConfig.isStreamingProcess()) {
 			streamingExecute(segmentContext);
 		} else { // 一次行执行任务
 			oneOffExecute(segmentContext);

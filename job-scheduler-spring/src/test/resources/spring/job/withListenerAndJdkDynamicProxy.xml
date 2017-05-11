@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:job="http://www.jd.com/schema/job-scheduler/job" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd
+                        http://www.jd.com/schema/job-scheduler/job
+                        http://www.jd.com/schema/job-scheduler/job/job.xsd
+                        http://www.springframework.org/schema/aop
+                        http://www.springframework.org/schema/aop/spring-aop.xsd
+                        ">
+	<context:component-scan
+		base-package="com.jd.framework.job.spring.fixture.aspect,com.jd.framework.job.spring.fixture.service" />
+	<aop:aspectj-autoproxy proxy-target-class="false" />
+
+	<import resource="base.xml" />
+
+	<job:simple id="testSpringSimpleJob_namespace_listener_jdk_proxy"
+		class="com.jd.framework.job.spring.fixture.job.TestSpringSimpleJob"
+		registry-center-ref="regCenter" cron="${simpleJob.cron}"
+		segment-total-count="${simpleJob.segmentTotalCount}"
+		segment-item-parameters="${simpleJob.segmentItemParameters}" disabled="${simpleJob.disabled}"
+		overwrite="${simpleJob.overwrite}" event-trace-rdb-data-source="JobSchedulerLog">
+		<job:listener
+			class="com.jd.framework.job.spring.fixture.listener.TestSimpleJDKDynamicProxyListener" />
+	</job:simple>
+
+	<job:flow id="testSpringFlowJob_namespace_listener_jdk_proxy"
+		class="com.jd.framework.job.spring.fixture.job.TestSpringFlowJob"
+		registry-center-ref="regCenter" cron="0/1 * * * * ?"
+		segment-total-count="3" segment-item-parameters="0=A,1=B,2=C"
+		description="中文描述" overwrite="true" streaming-process="true" />
+</beans>

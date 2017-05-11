@@ -18,18 +18,18 @@ import com.jd.framework.job.core.api.strategy.JobSegmentStrategyOption;
 
 /**
  * 
- * 根据作业名的哈希值对服务器列表进行轮转的分片策略.
+ * 根据作业名的哈希值对服务器列表进行轮转的分段策略.
  * 
  * @author Rong Hu
  * @version 1.0, 2017-4-9
  */
 public class RotateServerByNameJobSegmentStrategy implements JobSegmentStrategy {
 
-	private AverageAllocationJobSegmentStrategy averageAllocationJobShardingStrategy = new AverageAllocationJobSegmentStrategy();
+	private AverageAllocationJobSegmentStrategy averageAllocationJobSegmentStrategy = new AverageAllocationJobSegmentStrategy();
 
 	@Override
 	public Map<String, List<Integer>> segment(List<String> serversList, JobSegmentStrategyOption option) {
-		return averageAllocationJobShardingStrategy.segment(rotateServerList(serversList, option.getJobName()), option);
+		return averageAllocationJobSegmentStrategy.segment(rotateServerList(serversList, option.getJobName()), option);
 	}
 
 	private List<String> rotateServerList(final List<String> serversList, final String jobName) {

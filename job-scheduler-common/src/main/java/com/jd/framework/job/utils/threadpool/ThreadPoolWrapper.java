@@ -45,6 +45,8 @@ public class ThreadPoolWrapper {
 	 * @return 线程池服务对象
 	 */
 	public ExecutorService createExecutorService() {
+		// 将 ExecutorService 转为 ListeningExecutorService,
+		// 可用guava封装的Futures,添加callback等
 		return MoreExecutors.listeningDecorator(MoreExecutors.getExitingExecutorService(threadPoolExecutor));
 	}
 

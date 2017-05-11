@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:job="http://www.jd.com/schema/job-scheduler/job"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.jd.com/schema/job-scheduler/job 
+                        http://www.jd.com/schema/job-scheduler/job/job.xsd 
+                        ">
+	<import resource="base.xml" />
+	
+	<job:simple id="${simpleJob.id}" class="${simpleJob.class}"
+		registry-center-ref="regCenter" cron="${simpleJob.cron}"
+		segment-total-count="${simpleJob.segmentTotalCount}"
+		segment-item-parameters="${simpleJob.segmentItemParameters}" disabled="${simpleJob.disabled}"
+		overwrite="${simpleJob.overwrite}">
+		<job:listener
+			class="com.jd.framework.job.spring.fixture.listener.TestSimpleListener" />
+		<job:distributed-listener
+			class="com.jd.framework.job.spring.fixture.listener.TestSimpleOnceListener"
+			started-timeout-milliseconds="10000" completed-timeout-milliseconds="20000" />
+	</job:simple>
+	
+	<job:flow id="testSpringFlowJob_namespace_listener"
+		class="com.jd.framework.job.spring.fixture.job.TestSpringFlowJob"
+		registry-center-ref="regCenter" cron="0/1 * * * * ?"
+		segment-total-count="3" segment-item-parameters="0=A,1=B,2=C"
+		description="中文描述" overwrite="true" />
+</beans>

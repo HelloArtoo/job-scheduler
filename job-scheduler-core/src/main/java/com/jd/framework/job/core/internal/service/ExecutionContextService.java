@@ -47,20 +47,22 @@ public class ExecutionContextService {
 	}
 
 	/**
-	 * 获取当前作业服务器分片上下文.
+	 * 获取当前作业服务器分段上下文.
 	 * 
 	 * @param segmentItems
-	 *            分片项
-	 * @return 分片上下文
+	 *            分段项
+	 * @return 分段上下文
 	 */
 	public SegmentContexts getJobSegmentContext(final List<Integer> segmentItems) {
 		FactJobConfiguration factJobConfig = configService.load(false);
+		//remove running items
 		removeRunningIfMonitorExecution(factJobConfig.isMonitorExecution(), segmentItems);
 		if (segmentItems.isEmpty()) {
 			return new SegmentContexts(buildTaskId(factJobConfig, segmentItems), factJobConfig.getJobName(),
 					factJobConfig.getTypeConfig().getCoreConfig().getSegmentTotalCount(), factJobConfig.getTypeConfig()
 							.getCoreConfig().getJobParameter(), Collections.<Integer, String> emptyMap());
 		}
+
 		Map<Integer, String> segmentItemParameterMap = new SegmentItemParameters(factJobConfig.getTypeConfig()
 				.getCoreConfig().getSegmentItemParameters()).getMap();
 		return new SegmentContexts(buildTaskId(factJobConfig, segmentItems), factJobConfig.getJobName(), factJobConfig
@@ -73,6 +75,13 @@ public class ExecutionContextService {
 				localHostService.getIp(), UUID.randomUUID().toString());
 	}
 
+	/**
+	 * 开启Monitor时，移除正在运行的的items
+	 * 
+	 * @param monitorExecution
+	 * @param segmentItems
+	 * @author Rong Hu
+	 */
 	private void removeRunningIfMonitorExecution(final boolean monitorExecution, final List<Integer> segmentItems) {
 		if (!monitorExecution) {
 			return;

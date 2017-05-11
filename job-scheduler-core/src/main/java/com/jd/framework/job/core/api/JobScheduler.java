@@ -43,7 +43,7 @@ import com.jd.framework.job.regcenter.api.CoordinatorRegistryCenter;
 
 /**
  * 
- * 作业调度中心，总调度入口
+ * 作业调度中心，总调度入口 
  * 
  * @author Rong Hu
  * @version 1.0, 2017-4-6
@@ -62,20 +62,20 @@ public class JobScheduler {
 
 	private final JobRegistry jobRegistry;
 
-	public JobScheduler(final CoordinatorRegistryCenter regCenter, final FactJobConfiguration liteJobConfig,
+	public JobScheduler(final CoordinatorRegistryCenter regCenter, final FactJobConfiguration factJobConfig,
 			final ScheduleJobListener... scheduleJobListeners) {
-		this(regCenter, liteJobConfig, new JobEventBus(), scheduleJobListeners);
+		this(regCenter, factJobConfig, new JobEventBus(), scheduleJobListeners);
 	}
 
-	public JobScheduler(final CoordinatorRegistryCenter regCenter, final FactJobConfiguration liteJobConfig,
+	public JobScheduler(final CoordinatorRegistryCenter regCenter, final FactJobConfiguration factJobConfig,
 			final JobEventConfiguration jobEventConfig, final ScheduleJobListener... scheduleJobListeners) {
-		this(regCenter, liteJobConfig, new JobEventBus(jobEventConfig), scheduleJobListeners);
+		this(regCenter, factJobConfig, new JobEventBus(jobEventConfig), scheduleJobListeners);
 	}
 
-	private JobScheduler(final CoordinatorRegistryCenter regCenter, final FactJobConfiguration liteJobConfig,
+	private JobScheduler(final CoordinatorRegistryCenter regCenter, final FactJobConfiguration factJobConfig,
 			final JobEventBus jobEventBus, final ScheduleJobListener... scheduleJobListeners) {
-		jobName = liteJobConfig.getJobName();
-		jobExecutor = new JobExecutor(regCenter, liteJobConfig, scheduleJobListeners);
+		jobName = factJobConfig.getJobName();
+		jobExecutor = new JobExecutor(regCenter, factJobConfig, scheduleJobListeners);
 		jobFacade = new FactJobFacade(regCenter, jobName, Arrays.asList(scheduleJobListeners), jobEventBus);
 		jobRegistry = JobRegistry.getInstance();
 	}

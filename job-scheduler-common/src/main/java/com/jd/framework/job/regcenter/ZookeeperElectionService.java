@@ -33,28 +33,24 @@ public class ZookeeperElectionService {
 	private final CountDownLatch leaderLatch = new CountDownLatch(1);
 	private final LeaderSelector leaderSelector;
 
-	public ZookeeperElectionService(final String identity,
-			CuratorFramework client, final String electionPath,
+	public ZookeeperElectionService(final String identity, CuratorFramework client, final String electionPath,
 			final ElectionCandidate electionCandidate) {
-		leaderSelector = new LeaderSelector(client, electionPath,
-				new LeaderSelectorListenerAdapter() {
 
-					@Override
-					public void takeLeadership(CuratorFramework client)
-							throws Exception {
-						log.info("Job-scheduler:{} has leadership", identity);
-						try {
-							electionCandidate.startLeadership();
-							leaderLatch.await();
-							log.warn("Job-scheduler:{} lost leadership",
-									identity);
-							electionCandidate.stopLeadership();
-						} catch (JobSystemException e) {
-							log.error("Job-scheduler system error happened", e);
-							System.exit(1);
-						}
-					}
-				});
+		leaderSelector = new LeaderSelector(client, electionPath, new LeaderSelectorListenerAdapter() {
+			@Override
+			public void takeLeadership(CuratorFramework client) throws Exception {
+				log.info("Job-scheduler:{} has leadership", identity);
+				try {
+					electionCandidate.startLeadership();
+					leaderLatch.await();
+					log.warn("Job-scheduler:{} lost leadership", identity);
+					electionCandidate.stopLeadership();
+				} catch (JobSystemException e) {
+					log.error("Job-scheduler system error happened", e);
+					System.exit(1);
+				}
+			}
+		});
 		leaderSelector.autoRequeue();
 		leaderSelector.setId(identity);
 	}
@@ -62,18 +58,15 @@ public class ZookeeperElectionService {
 	/**
 	 * 开始选举
 	 * 
-	 * @author Rong Hu
 	 */
 	public void start() {
-		log.debug("Job-scheduler:{} start electing leadership",
-				leaderSelector.getId());
+		log.debug("Job-scheduler:{} start electing leadership", leaderSelector.getId());
 		leaderSelector.start();
 	}
 
 	/**
 	 * 选举取消
 	 * 
-	 * @author Rong Hu
 	 */
 	public void stop() {
 		log.info("Job-scheduler is stopping the election");

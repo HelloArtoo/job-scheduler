@@ -103,6 +103,7 @@ public abstract class AbstractJobExecutor {
 			jobExceptionHandler.handleException(jobName, cause);
 		}
 		execute(segmentContexts, JobExecutionEvent.ExecutionSource.NORMAL_TRIGGER);
+		// 执行错过的任务
 		while (jobFacade.isExecuteMisfired(segmentContexts.getSegmentItemParameters().keySet())) {
 			jobFacade.clearMisfire(segmentContexts.getSegmentItemParameters().keySet());
 			execute(segmentContexts, JobExecutionEvent.ExecutionSource.MISFIRE);
@@ -234,7 +235,6 @@ public abstract class AbstractJobExecutor {
 	 * 子类实现具体处理逻辑
 	 * 
 	 * @param segmentContext
-	 * @author Rong Hu
 	 */
 	protected abstract void process(SegmentContext segmentContext);
 }

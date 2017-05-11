@@ -57,7 +57,7 @@ public final class JobCoreConfiguration {
 	 * @param cron
 	 *            作业启动时间的cron表达式
 	 * @param segmentTotalCount
-	 *            作业分片总数
+	 *            作业分段总数
 	 * @return 简单作业配置构建器
 	 */
 	public static Builder newBuilder(final String jobName, final String cron,
@@ -87,15 +87,15 @@ public final class JobCoreConfiguration {
 		private final JobProperties jobProperties = new JobProperties();
 
 		/**
-		 * 设置分片序列号和个性化参数对照表.
+		 * 设置分段序列号和个性化参数对照表.
 		 * 
 		 * <p>
-		 * 分片序列号和参数用等号分隔, 多个键值对用逗号分隔. 类似map. 分片序列号从0开始, 不可大于或等于作业分片总数. 如:
+		 * 分段序列号和参数用等号分隔, 多个键值对用逗号分隔. 类似map. 分段序列号从0开始, 不可大于或等于作业分段总数. 如:
 		 * 0=a,1=b,2=c
 		 * </p>
 		 * 
 		 * @param segmentItemParameters
-		 *            分片序列号和个性化参数对照表
+		 *            分段序列号和个性化参数对照表
 		 * 
 		 * @return 作业配置构建器
 		 */

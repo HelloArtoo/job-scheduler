@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * 
- * 作业分片节点助手
+ * 作业分段节点助手
  * 
  * @author Rong Hu
  * @version 1.0, 2017-4-9
@@ -22,15 +22,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SegmentNodeHelper {
 
-	public static final String LEADER_SHARDING_ROOT = ServerNodeHelper.ROOT + "/sharding";
+	public static final String LEADER_SEGMENT_ROOT = ElectionNodeHelper.ROOT + "/segment";
 
-	public static final String NECESSARY = LEADER_SHARDING_ROOT + "/necessary";
+	public static final String NECESSARY = LEADER_SEGMENT_ROOT + "/necessary";
 
-	public static final String PROCESSING = LEADER_SHARDING_ROOT + "/processing";
+	public static final String PROCESSING = LEADER_SEGMENT_ROOT + "/processing";
 
-	private static final String SERVER_SHARDING = ServerNodeHelper.ROOT + "/%s/sharding";
+	private static final String SERVER_SEGMENT = ServerNodeHelper.ROOT + "/%s/segment";
 
 	public static String getSegmentNode(final String ip) {
-		return String.format(SERVER_SHARDING, ip);
+		return String.format(SERVER_SEGMENT, ip);
 	}
 }

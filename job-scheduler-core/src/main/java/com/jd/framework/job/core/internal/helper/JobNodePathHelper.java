@@ -132,7 +132,7 @@ public final class JobNodePathHelper {
 	 * 获取运行节点路径.
 	 * 
 	 * @param item
-	 *            分片项
+	 *            分段项
 	 * @param nodeName
 	 *            子节点名称
 	 * @return 运行节点路径

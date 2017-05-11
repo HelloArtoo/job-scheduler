@@ -38,7 +38,7 @@ import com.jd.framework.job.constant.job.ExecutionType;
 @ToString(of = "id")
 public final class TaskContext {
 
-	private static final String DELIMITER = "@-@";
+	private static final String DELIMITER = "@-@";//@-@
 
 	private static final String UNASSIGNED_SLAVE_ID = "unassigned-slave";
 

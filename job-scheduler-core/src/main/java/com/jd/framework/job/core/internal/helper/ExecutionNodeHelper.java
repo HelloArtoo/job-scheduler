@@ -36,16 +36,16 @@ public final class ExecutionNodeHelper {
 
 	public static final String MISFIRE = ROOT + "/%s/misfire";
 
-	public static final String LEADER_ROOT = ExecutionNodeHelper.ROOT + "/" + ROOT;
+	public static final String LEADER_ROOT = ElectionNodeHelper.ROOT + "/" + ROOT;
 
 	public static final String NECESSARY = LEADER_ROOT + "/necessary";
 
 	public static final String CLEANING = LEADER_ROOT + "/cleaning";
 
-	private final JobNodePathHelper jobNodePathHelper;
+	private final JobNodePathHelper jobNodePath;
 
 	public ExecutionNodeHelper(final String jobName) {
-		jobNodePathHelper = new JobNodePathHelper(jobName);
+		jobNodePath = new JobNodePathHelper(jobName);
 	}
 
 	/**
@@ -80,21 +80,21 @@ public final class ExecutionNodeHelper {
 	}
 
 	/**
-	 * 根据运行中的分片路径获取分片项.
+	 * 根据运行中的分段路径获取分段项.
 	 * 
 	 * @param path
-	 *            运行中的分片路径
-	 * @return 分片项, 不是运行中的分片路径获则返回null
+	 *            运行中的分段路径
+	 * @return 分段项, 不是运行中的分段路径获则返回null
 	 */
 	public Integer getItemByRunningItemPath(final String path) {
 		if (!isRunningItemPath(path)) {
 			return null;
 		}
-		return Integer.parseInt(path.substring(jobNodePathHelper.getFullPath(ROOT).length() + 1,
+		return Integer.parseInt(path.substring(jobNodePath.getFullPath(ROOT).length() + 1,
 				path.lastIndexOf(RUNNING_APPENDIX) - 1));
 	}
 
 	private boolean isRunningItemPath(final String path) {
-		return path.startsWith(jobNodePathHelper.getFullPath(ROOT)) && path.endsWith(RUNNING_APPENDIX);
+		return path.startsWith(jobNodePath.getFullPath(ROOT)) && path.endsWith(RUNNING_APPENDIX);
 	}
 }

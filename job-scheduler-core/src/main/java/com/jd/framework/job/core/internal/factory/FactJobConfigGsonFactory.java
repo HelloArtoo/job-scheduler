@@ -16,6 +16,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.jd.framework.job.config.JobTypeConfiguration;
 import com.jd.framework.job.core.config.FactJobConfiguration;
+import com.jd.framework.job.utils.json.AbstractJobConfigGsonTypeAdapter;
 import com.jd.framework.job.utils.json.GsonFactory;
 
 /**
@@ -82,8 +83,8 @@ public class FactJobConfigGsonFactory {
 			case "monitorPort":
 				customizedValueMap.put("monitorPort", in.nextInt());
 				break;
-			case "jobShardingStrategyClass":
-				customizedValueMap.put("jobShardingStrategyClass", in.nextString());
+			case "jobSegmentStrategyClass":
+				customizedValueMap.put("jobSegmentStrategyClass", in.nextString());
 				break;
 			case "disabled":
 				customizedValueMap.put("disabled", in.nextBoolean());
@@ -113,8 +114,8 @@ public class FactJobConfigGsonFactory {
 			if (customizedValueMap.containsKey("monitorPort")) {
 				builder.monitorPort((int) customizedValueMap.get("monitorPort"));
 			}
-			if (customizedValueMap.containsKey("jobShardingStrategyClass")) {
-				builder.jobSegmentStrategyClass((String) customizedValueMap.get("jobShardingStrategyClass"));
+			if (customizedValueMap.containsKey("jobSegmentStrategyClass")) {
+				builder.jobSegmentStrategyClass((String) customizedValueMap.get("jobSegmentStrategyClass"));
 			}
 			if (customizedValueMap.containsKey("disabled")) {
 				builder.disabled((boolean) customizedValueMap.get("disabled"));
@@ -133,7 +134,7 @@ public class FactJobConfigGsonFactory {
 			out.name("monitorExecution").value(value.isMonitorExecution());
 			out.name("maxTimeDiffSeconds").value(value.getMaxTimeDiffSeconds());
 			out.name("monitorPort").value(value.getMonitorPort());
-			out.name("jobShardingStrategyClass").value(value.getJobSegmentStrategyClass());
+			out.name("jobSegmentStrategyClass").value(value.getJobSegmentStrategyClass());
 			out.name("disabled").value(value.isDisabled());
 			out.name("overwrite").value(value.isOverwrite());
 			out.name("reconcileIntervalMinutes").value(value.getReconcileIntervalMinutes());

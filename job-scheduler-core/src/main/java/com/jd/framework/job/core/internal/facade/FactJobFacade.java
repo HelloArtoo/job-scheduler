@@ -37,7 +37,7 @@ import com.jd.framework.job.regcenter.api.CoordinatorRegistryCenter;
 
 /**
  * 
- * This class is used for ...
+ * 实际任务门面类
  * 
  * @author Rong Hu
  * @version 1.0, 2017-4-9
@@ -178,7 +178,7 @@ public class FactJobFacade implements JobFacade {
 	public void postJobStatusTraceEvent(final String taskId, final State state, final String message) {
 		TaskContext taskContext = TaskContext.from(taskId);
 		jobEventBus.post(new JobStatusTraceEvent(taskContext.getMetaInfo().getJobName(), taskContext.getId(),
-				taskContext.getSlaveId(), Source.LITE_EXECUTOR, taskContext.getType(), taskContext.getMetaInfo()
+				taskContext.getSlaveId(), Source.FACT_EXECUTOR, taskContext.getType(), taskContext.getMetaInfo()
 						.getSegmentItems().toString(), state, message));
 		if (!Strings.isNullOrEmpty(message)) {
 			log.trace(message);

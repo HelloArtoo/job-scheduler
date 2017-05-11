@@ -18,7 +18,7 @@ import com.jd.framework.job.utils.env.LocalHostService;
  * @author Rong Hu
  * @version 1.0, 2017-4-9
  */
-public final class ServerNodeHelper {
+public class ServerNodeHelper {
 	/**
 	 * 作业服务器信息根节点.
 	 */

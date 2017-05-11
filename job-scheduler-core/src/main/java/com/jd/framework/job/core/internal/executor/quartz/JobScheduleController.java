@@ -83,8 +83,7 @@ public class JobScheduleController {
 	 * 
 	 * @param cron
 	 *            表达式
-	 * @return
-	 * @author Rong Hu
+	 * @return CronTrigger
 	 */
 	private CronTrigger createTrigger(final String cron) {
 		CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
@@ -99,7 +98,7 @@ public class JobScheduleController {
 	/**
 	 * 获取下次作业触发时间.
 	 * 
-	 * @return 下次作业触发时间
+	 * @return Date 下次作业触发时间
 	 */
 	public Date getNextFireTime() {
 		List<? extends Trigger> triggers;

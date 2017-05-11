@@ -1,0 +1,2 @@
+http\://www.jd.com/schema/job-scheduler/reg=com.jd.framework.job.spring.namespace.reg.RegNamespaceHandler
+http\://www.jd.com/schema/job-scheduler/job=com.jd.framework.job.spring.namespace.job.JobNamespaceHandler

@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class ReconcileService extends AbstractScheduledService {
+
 	private long lastReconcileTime;
 
 	private final ConfigService configService;
@@ -42,6 +43,7 @@ public class ReconcileService extends AbstractScheduledService {
 
 	@Override
 	protected void runOneIteration() throws Exception {
+
 		FactJobConfiguration config = configService.load(true);
 		int reconcileIntervalMinutes = null == config || config.getReconcileIntervalMinutes() <= 0 ? -1 : config
 				.getReconcileIntervalMinutes();
@@ -50,7 +52,7 @@ public class ReconcileService extends AbstractScheduledService {
 			lastReconcileTime = System.currentTimeMillis();
 			if (leaderElectionService.isLeader() && !segmentService.isNeedSegment()
 					&& segmentService.hasNotRunningSegmentNode()) {
-				log.warn("Elastic Job: job status node has inconsistent value,start reconciling...");
+				log.warn("Job-scheduler: job status node has inconsistent value,start reconciling...");
 				// 打标，重新分配
 				segmentService.setResegmentFlag();
 			}

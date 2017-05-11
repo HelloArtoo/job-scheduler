@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * 
- * 分片项工具类
+ * 分段工具类
  * 
  * @author Rong Hu
  * @version 1.0, 2017-4-9
@@ -31,11 +31,11 @@ public class SegmentItems {
 	private static final String DELIMITER = ",";
 
 	/**
-	 * 根据分片项字符串获取分片项列表.
+	 * 根据分段项字符串获取分段项列表.
 	 * 
 	 * @param itemsString
-	 *            分片项字符串
-	 * @return 分片项列表
+	 *            分段项字符串
+	 * @return 分段项列表
 	 */
 	public static List<Integer> toItemList(final String itemsString) {
 		if (Strings.isNullOrEmpty(itemsString)) {
@@ -53,11 +53,11 @@ public class SegmentItems {
 	}
 
 	/**
-	 * 根据分片项列表获取分片项字符串.
+	 * 根据分段项列表获取分段项字符串.
 	 * 
 	 * @param items
-	 *            分片项列表
-	 * @return 分片项字符串
+	 *            分段项列表
+	 * @return 分段项字符串
 	 */
 	public static String toItemsString(final List<Integer> items) {
 		return items.isEmpty() ? "" : Joiner.on(DELIMITER).join(items);

@@ -30,8 +30,8 @@ public class FactJobConfiguration implements JobRootConfiguration {
 
 	private final JobTypeConfiguration typeConfig;
 	private final boolean monitorExecution;
-	private final int monitorPort;
 	private final int maxTimeDiffSeconds;
+	private final int monitorPort;
 	private final String jobSegmentStrategyClass;
 	private final boolean disabled;
 	private final boolean overwrite;
@@ -135,15 +135,15 @@ public class FactJobConfiguration implements JobRootConfiguration {
 		}
 
 		/**
-		 * 设置作业分片策略实现类全路径.
+		 * 设置作业分段策略实现类全路径.
 		 * 
 		 * <p>
 		 * 默认使用
-		 * {@code com.dangdang.ddframe.job.plugin.sharding.strategy.AverageAllocationJobShardingStrategy}
+		 * {@code  com.jd.framework.job.core.api.strategy.impl.AverageAllocationJobSegmentStrategy}
 		 * .
 		 * </p>
 		 * 
-		 * @param jobShardingStrategyClass
+		 * @param jobSegmentStrategyClass
 		 *            作业辅助监控端口
 		 * 
 		 * @return 作业配置构建器
@@ -194,7 +194,7 @@ public class FactJobConfiguration implements JobRootConfiguration {
 		 * 设置修复作业服务器不一致状态服务执行间隔分钟数.
 		 * 
 		 * <p>
-		 * 每隔一段时间监视作业服务器的状态，如果不正确则重新分片。
+		 * 每隔一段时间监视作业服务器的状态，如果不正确则重新分段。
 		 * </p>
 		 * 
 		 * @param reconcileIntervalMinutes

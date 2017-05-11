@@ -55,6 +55,9 @@ public class ConfigListenerManager extends AbstractListenerManager {
 	 */
 	class CronSettingAndJobEventChangedJobListener extends AbstractJobListener {
 
+		/**
+		 * 重新调度作业
+		 */
 		@Override
 		protected void dataChanged(final CuratorFramework client, final TreeCacheEvent event, final String path) {
 			if (configNode.isConfigPath(path) && Type.NODE_UPDATED == event.getType()) {
@@ -62,9 +65,9 @@ public class ConfigListenerManager extends AbstractListenerManager {
 				if (null == jobScheduler) {
 					return;
 				}
-				FactJobConfiguration liteJobConfiguration = FactJobConfigGsonFactory.fromJson(new String(event
+				FactJobConfiguration factJobConfiguration = FactJobConfigGsonFactory.fromJson(new String(event
 						.getData().getData()));
-				jobScheduler.rescheduleJob(liteJobConfiguration.getTypeConfig().getCoreConfig().getCron());
+				jobScheduler.rescheduleJob(factJobConfiguration.getTypeConfig().getCoreConfig().getCron());
 			}
 		}
 	}

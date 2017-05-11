@@ -36,7 +36,7 @@ public class ExecutionService {
 
 	private final String jobName;
 
-	private final JobNodeStorageHelper jobNodeStorageHelper;
+	private final JobNodeStorageHelper jobNodeStorage;
 
 	private final ConfigService configService;
 
@@ -46,7 +46,7 @@ public class ExecutionService {
 
 	public ExecutionService(final CoordinatorRegistryCenter regCenter, final String jobName) {
 		this.jobName = jobName;
-		jobNodeStorageHelper = new JobNodeStorageHelper(regCenter, jobName);
+		jobNodeStorage = new JobNodeStorageHelper(regCenter, jobName);
 		configService = new ConfigService(regCenter, jobName);
 		serverService = new ServerService(regCenter, jobName);
 		leaderElectionService = new LeaderElectionService(regCenter, jobName);
@@ -62,8 +62,8 @@ public class ExecutionService {
 		if (!segmentContexts.getSegmentItemParameters().isEmpty() && configService.load(true).isMonitorExecution()) {
 			serverService.updateServerStatus(ServerStatus.RUNNING);
 			for (int each : segmentContexts.getSegmentItemParameters().keySet()) {
-				jobNodeStorageHelper.fillEphemeralJobNode(ExecutionNodeHelper.getRunningNode(each), "");
-				jobNodeStorageHelper.replaceJobNode(ExecutionNodeHelper.getLastBeginTimeNode(each),
+				jobNodeStorage.fillEphemeralJobNode(ExecutionNodeHelper.getRunningNode(each), "");
+				jobNodeStorage.replaceJobNode(ExecutionNodeHelper.getLastBeginTimeNode(each),
 						System.currentTimeMillis());
 				// 从注册表中获取作业控制器
 				JobScheduleController jobScheduleController = JobRegistry.getInstance().getJobScheduleController(
@@ -73,7 +73,7 @@ public class ExecutionService {
 				}
 				Date nextFireTime = jobScheduleController.getNextFireTime();
 				if (null != nextFireTime) {
-					jobNodeStorageHelper.replaceJobNode(ExecutionNodeHelper.getNextFireTimeNode(each),
+					jobNodeStorage.replaceJobNode(ExecutionNodeHelper.getNextFireTimeNode(each),
 							nextFireTime.getTime());
 				}
 			}
@@ -84,21 +84,21 @@ public class ExecutionService {
 	 * 清理作业上次运行时信息. 只会在主节点进行.
 	 */
 	public void cleanPreviousExecutionInfo() {
-		if (!jobNodeStorageHelper.isJobNodeExisted(ExecutionNodeHelper.ROOT)) {
+		if (!jobNodeStorage.isJobNodeExisted(ExecutionNodeHelper.ROOT)) {
 			return;
 		}
 		if (leaderElectionService.isLeader()) {
-			jobNodeStorageHelper.fillEphemeralJobNode(ExecutionNodeHelper.CLEANING, "");
+			jobNodeStorage.fillEphemeralJobNode(ExecutionNodeHelper.CLEANING, "");
 			List<Integer> items = this.getAllItems();
 			for (int each : items) {
-				jobNodeStorageHelper.removeJobNodeIfExisted(ExecutionNodeHelper.getCompletedNode(each));
+				jobNodeStorage.removeJobNodeIfExisted(ExecutionNodeHelper.getCompletedNode(each));
 			}
-			if (jobNodeStorageHelper.isJobNodeExisted(ExecutionNodeHelper.NECESSARY)) {
+			if (jobNodeStorage.isJobNodeExisted(ExecutionNodeHelper.NECESSARY)) {
 				fixExecutionInfo(items);
 			}
-			jobNodeStorageHelper.removeJobNodeIfExisted(ExecutionNodeHelper.CLEANING);
+			jobNodeStorage.removeJobNodeIfExisted(ExecutionNodeHelper.CLEANING);
 		}
-		while (jobNodeStorageHelper.isJobNodeExisted(ExecutionNodeHelper.CLEANING)) {
+		while (jobNodeStorage.isJobNodeExisted(ExecutionNodeHelper.CLEANING)) {
 			BlockUtils.waitingShortTime();
 		}
 	}
@@ -108,14 +108,14 @@ public class ExecutionService {
 		int currentSegmentTotalCount = items.size();
 		if (newSegmentTotalCount > currentSegmentTotalCount) {
 			for (int i = currentSegmentTotalCount; i < newSegmentTotalCount; i++) {
-				jobNodeStorageHelper.createJobNodeIfNeeded(ExecutionNodeHelper.ROOT + "/" + i);
+				jobNodeStorage.createJobNodeIfNeeded(ExecutionNodeHelper.ROOT + "/" + i);
 			}
 		} else if (newSegmentTotalCount < currentSegmentTotalCount) {
 			for (int i = newSegmentTotalCount; i < currentSegmentTotalCount; i++) {
-				jobNodeStorageHelper.removeJobNodeIfExisted(ExecutionNodeHelper.ROOT + "/" + i);
+				jobNodeStorage.removeJobNodeIfExisted(ExecutionNodeHelper.ROOT + "/" + i);
 			}
 		}
-		jobNodeStorageHelper.removeJobNodeIfExisted(ExecutionNodeHelper.NECESSARY);
+		jobNodeStorage.removeJobNodeIfExisted(ExecutionNodeHelper.NECESSARY);
 	}
 
 	/**
@@ -130,9 +130,9 @@ public class ExecutionService {
 		}
 		serverService.updateServerStatus(ServerStatus.READY);
 		for (int each : segmentContexts.getSegmentItemParameters().keySet()) {
-			jobNodeStorageHelper.createJobNodeIfNeeded(ExecutionNodeHelper.getCompletedNode(each));
-			jobNodeStorageHelper.removeJobNodeIfExisted(ExecutionNodeHelper.getRunningNode(each));
-			jobNodeStorageHelper.replaceJobNode(ExecutionNodeHelper.getLastCompleteTimeNode(each),
+			jobNodeStorage.createJobNodeIfNeeded(ExecutionNodeHelper.getCompletedNode(each));
+			jobNodeStorage.removeJobNodeIfExisted(ExecutionNodeHelper.getRunningNode(each));
+			jobNodeStorage.replaceJobNode(ExecutionNodeHelper.getLastCompleteTimeNode(each),
 					System.currentTimeMillis());
 		}
 	}
@@ -141,7 +141,7 @@ public class ExecutionService {
 	 * 设置修复运行时分段信息标记的状态标志位.
 	 */
 	public void setNeedFixExecutionInfoFlag() {
-		jobNodeStorageHelper.createJobNodeIfNeeded(ExecutionNodeHelper.NECESSARY);
+		jobNodeStorage.createJobNodeIfNeeded(ExecutionNodeHelper.NECESSARY);
 	}
 
 	/**
@@ -156,7 +156,7 @@ public class ExecutionService {
 	 */
 	public void clearRunningInfo(final List<Integer> items) {
 		for (int each : items) {
-			jobNodeStorageHelper.removeJobNodeIfExisted(ExecutionNodeHelper.getRunningNode(each));
+			jobNodeStorage.removeJobNodeIfExisted(ExecutionNodeHelper.getRunningNode(each));
 		}
 	}
 
@@ -186,7 +186,7 @@ public class ExecutionService {
 			return;
 		}
 		for (int each : items) {
-			jobNodeStorageHelper.createJobNodeIfNeeded(ExecutionNodeHelper.getMisfireNode(each));
+			jobNodeStorage.createJobNodeIfNeeded(ExecutionNodeHelper.getMisfireNode(each));
 		}
 	}
 
@@ -200,7 +200,7 @@ public class ExecutionService {
 	public List<Integer> getMisfiredJobItems(final Collection<Integer> items) {
 		List<Integer> result = new ArrayList<>(items.size());
 		for (int each : items) {
-			if (jobNodeStorageHelper.isJobNodeExisted(ExecutionNodeHelper.getMisfireNode(each))) {
+			if (jobNodeStorage.isJobNodeExisted(ExecutionNodeHelper.getMisfireNode(each))) {
 				result.add(each);
 			}
 		}
@@ -215,7 +215,7 @@ public class ExecutionService {
 	 */
 	public void clearMisfire(final Collection<Integer> items) {
 		for (int each : items) {
-			jobNodeStorageHelper.removeJobNodeIfExisted(ExecutionNodeHelper.getMisfireNode(each));
+			jobNodeStorage.removeJobNodeIfExisted(ExecutionNodeHelper.getMisfireNode(each));
 		}
 	}
 
@@ -223,7 +223,7 @@ public class ExecutionService {
 	 * 删除作业执行时信息.
 	 */
 	public void removeExecutionInfo() {
-		jobNodeStorageHelper.removeJobNodeIfExisted(ExecutionNodeHelper.ROOT);
+		jobNodeStorage.removeJobNodeIfExisted(ExecutionNodeHelper.ROOT);
 	}
 
 	/**
@@ -234,7 +234,7 @@ public class ExecutionService {
 	 * @return 该分段是否已完成
 	 */
 	public boolean isCompleted(final int item) {
-		return jobNodeStorageHelper.isJobNodeExisted(ExecutionNodeHelper.getCompletedNode(item));
+		return jobNodeStorage.isJobNodeExisted(ExecutionNodeHelper.getCompletedNode(item));
 	}
 
 	/**
@@ -249,7 +249,7 @@ public class ExecutionService {
 			return false;
 		}
 		for (int each : items) {
-			if (jobNodeStorageHelper.isJobNodeExisted(ExecutionNodeHelper.getRunningNode(each))) {
+			if (jobNodeStorage.isJobNodeExisted(ExecutionNodeHelper.getRunningNode(each))) {
 				return true;
 			}
 		}
@@ -266,7 +266,7 @@ public class ExecutionService {
 	}
 
 	private List<Integer> getAllItems() {
-		return Lists.transform(jobNodeStorageHelper.getJobNodeChildrenKeys(ExecutionNodeHelper.ROOT),
+		return Lists.transform(jobNodeStorage.getJobNodeChildrenKeys(ExecutionNodeHelper.ROOT),
 				new Function<String, Integer>() {
 
 					@Override

@@ -32,12 +32,12 @@ public final class GuaranteeNodeHelper {
 		jobNodePath = new JobNodePathHelper(jobName);
 	}
 
-	public static String getStartedNode(final int shardingItem) {
-		return Joiner.on("/").join(STARTED_ROOT, shardingItem);
+	public static String getStartedNode(final int segmentItem) {
+		return Joiner.on("/").join(STARTED_ROOT, segmentItem);
 	}
 
-	public static String getCompletedNode(final int shardingItem) {
-		return Joiner.on("/").join(COMPLETED_ROOT, shardingItem);
+	public static String getCompletedNode(final int segmentItem) {
+		return Joiner.on("/").join(COMPLETED_ROOT, segmentItem);
 	}
 
 	public boolean isStartedRootNode(final String path) {

@@ -37,7 +37,7 @@ public class JobExecutorFactory {
 	/**
 	 * 获取作业执行器.
 	 * 
-	 * @param elasticJob
+	 * @param scheduleJob
 	 *            分布式弹性作业
 	 * @param jobFacade
 	 *            作业内部服务门面服务
