@@ -1,6 +1,8 @@
 # job-scheduler
 
 
-## 分布式分段计算任务框架
+## 分布式分段计算框架
 
-	Coding...
+	Coding...(based on quartz & zookeeper.)
+
+
