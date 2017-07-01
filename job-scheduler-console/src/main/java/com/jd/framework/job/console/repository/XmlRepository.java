@@ -6,13 +6,12 @@
  * and shall use it only in accordance with the terms of the agreements   
  * you entered into with Founder.   
  *   
- */     
-package com.jd.framework.job.console.service;    
+ */
+package com.jd.framework.job.console.repository;
 
-import org.springframework.stereotype.Service;
-    
-@Service
-public class RegistryCenterService {
+public interface XmlRepository<E> {
 
+	E load();
+
+	void save(E entity);
 }
-  

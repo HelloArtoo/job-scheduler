@@ -111,6 +111,7 @@ public class FactJobFacade implements JobFacade {
 				return executionContextService.getJobSegmentContext(failoverSegmentItems);
 			}
 		}
+		//主节点将会重新分段
 		segmentService.segmentIfNecessary();
 		List<Integer> segmentItems = segmentService.getLocalHostSegmentItems();
 		if (isFailover) {

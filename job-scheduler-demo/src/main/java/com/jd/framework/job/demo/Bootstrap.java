@@ -9,7 +9,7 @@
  */
 package com.jd.framework.job.demo;
 
-import static com.jd.framework.job.demo.fixture.ConfigurationHelper.*;
+import static com.jd.framework.job.demo.fixture.ConfigurationHelper.createProductSyncSimpleConfiguration;
 
 import javax.sql.DataSource;
 
@@ -26,7 +26,7 @@ import com.jd.framework.job.regcenter.conf.ZookeeperConfiguration;
 
 public class Bootstrap {
 
-	private static final int ZK_PORT = 2181;
+	//private static final int ZK_PORT = 2181;
 	// private static final String ZK_CONNECTION = "localhost:" + ZK_PORT;
 	private static final String ZK_SERVERLIST = "localhost:2181,localhost:2182,localhost:2183";
 	private static final String ZK_NAMESPACE = "Job-Scheduler-Demos";

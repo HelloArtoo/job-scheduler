@@ -11,7 +11,7 @@
 	<description>core module</description>
 
 	<dependencies>
-		
+
 		<dependency>
 			<groupId>com.jd</groupId>
 			<artifactId>job-scheduler-common</artifactId>

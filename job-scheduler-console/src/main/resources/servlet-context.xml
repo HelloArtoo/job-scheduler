@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<mvc:view-controller path="/" view-name="redirect:/index" />
+
+	<mvc:annotation-driven />
+
+	<!-- Static resources -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:default-servlet-handler />
+
+	<context:component-scan base-package="com.jd.framework.job.console.**.controller"></context:component-scan>
+
+	<!-- html 解析 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/html/" />
+		<property name="suffix" value=".html" />
+		<property name="order" value="1"></property>
+	</bean>
+
+	<!-- velocity 解析 -->
+	<bean id="velocityConfig"
+		class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<property name="configLocation" value="classpath:conf/velocity.properties" />
+		<property name="resourceLoaderPath" value="/" />
+		<property name="velocityProperties">
+			<props>
+				<prop key="input.encoding">UTF-8</prop>
+				<prop key="output.encoding">UTF-8</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="velocityViewResolver"
+		class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+		<property name="cache" value="true" />
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".vm" />
+		<property name="layoutUrl" value="/WEB-INF/views/dashboard.vm" />
+		<property name="layoutKey" value="layout" />
+		<property name="screenContentKey" value="screen_content" />
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.velocity.VelocityLayoutView" />
+		<property name="dateToolAttribute" value="dateTool"></property>
+		<property name="numberToolAttribute" value="numberTool"></property>
+		<property name="order" value="0"></property>
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<bean
+					class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+				<bean
+					class="org.springframework.http.converter.StringHttpMessageConverter" />
+				<bean class="org.springframework.http.converter.FormHttpMessageConverter" />
+				<bean
+					class="org.springframework.http.converter.xml.SourceHttpMessageConverter" />
+				<bean
+					class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+					<property name="prefixJson" value="false" />
+					<property name="supportedMediaTypes" value="application/json;charset=UTF-8" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 异常处理页面 -->
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<!-- 定义默认的异常处理页面，当该异常类型的注册时使用 -->
+		<property name="defaultErrorView" value="error"></property>
+		<!-- 定义异常处理页面用来获取异常信息的变量名，默认名为exception -->
+		<property name="exceptionAttribute" value="ex"></property>
+		<!-- 定义需要特殊处理的异常，用类名或完全路径名作为key，异常也页名作为值 -->
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Throwable">error</prop>
+				<!-- 这里还可以继续扩展对不同异常类型的处理 -->
+			</props>
+		</property>
+	</bean>
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/job/**" />
+			<bean
+				class="com.jd.framework.job.console.interceptor.SessionRegCenterConfigInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/server/**" />
+			<bean
+				class="com.jd.framework.job.console.interceptor.SessionRegCenterConfigInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+</beans>
