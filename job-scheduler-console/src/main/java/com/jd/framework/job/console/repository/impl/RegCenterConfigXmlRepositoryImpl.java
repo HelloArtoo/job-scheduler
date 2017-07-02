@@ -19,8 +19,8 @@ import com.jd.framework.job.console.repository.RegCenterConfigXmlRepository;
 public class RegCenterConfigXmlRepositoryImpl extends AbstractXmlRepository<RegCenterConfigurations> implements
 		RegCenterConfigXmlRepository {
 
-	protected RegCenterConfigXmlRepositoryImpl(String fileName, Class<RegCenterConfigurations> clazz) {
-		super("RegCenterConfigurations.xml", RegCenterConfigurations.class);
+	public RegCenterConfigXmlRepositoryImpl() {		
+		super("RegCenterConfigurations.xml", RegCenterConfigurations.class);		
 	}
 
 }

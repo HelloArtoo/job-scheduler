@@ -37,6 +37,21 @@ public class DashboardController {
 	@Resource
 	private RegCenterService regCenterService;
 
+	@RequestMapping(value = "test", method = RequestMethod.GET)
+	public String test(final ModelMap model) {
+		return "dashboard";
+	}
+	
+	@RequestMapping(value = "jobtest", method = RequestMethod.GET)
+	public String test2(final ModelMap model) {
+		return "job";
+	}
+	
+	@RequestMapping(value = "servertest", method = RequestMethod.GET)
+	public String test3(final ModelMap model) {
+		return "server";
+	}
+
 	@RequestMapping(method = RequestMethod.GET)
 	public String homepage(final ModelMap model) {
 		Optional<RegCenterConfiguration> activatedRegCenterConfig = regCenterService.loadActivated();
@@ -44,13 +59,13 @@ public class DashboardController {
 			model.put(RegCenterController.REG_CENTER_CONFIG_KEY, activatedRegCenterConfig.get());
 			return "redirect:overview";
 		}
-		return "redirect:registry_center_page";
+		return "redirect:registry";
 	}
 
-	@RequestMapping(value = "registry_center_page", method = RequestMethod.GET)
+	@RequestMapping(value = "registry", method = RequestMethod.GET)
 	public String registryCenterPage(final ModelMap model) {
 		model.put("activeTab", 1);
-		return "registry_center";
+		return "registry";
 	}
 
 	@RequestMapping(value = "job_detail", method = RequestMethod.GET)
@@ -69,7 +84,7 @@ public class DashboardController {
 	@RequestMapping(value = "overview", method = RequestMethod.GET)
 	public String overview(final ModelMap model) {
 		model.put("activeTab", 0);
-		return "overview";
+		return "dashboard";
 	}
 
 	@RequestMapping(value = "help", method = RequestMethod.GET)

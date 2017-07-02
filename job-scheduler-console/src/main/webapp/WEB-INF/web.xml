@@ -16,9 +16,6 @@
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
-	<listener>
-		<listener-class>org.apache.commons.fileupload.servlet.FileCleanerCleanup</listener-class>
-	</listener>
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>
 		<url-pattern>*.js</url-pattern>
@@ -36,19 +33,21 @@
 		<url-pattern>*.ico</url-pattern>
 		<url-pattern>*.json</url-pattern>
 	</servlet-mapping>
+
 	<servlet>
-		<servlet-name>union-web</servlet-name>
+		<servlet-name>mvc-dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
 		<init-param>
-			<param-name>dispatchOptionsRequest</param-name>
-			<param-value>true</param-value>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:servlet-context.xml</param-value>
 		</init-param>
+		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>union-web</servlet-name>
+		<servlet-name>mvc-dispatcher</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+
 	<filter>
 		<filter-name>wwwAuthFilter</filter-name>
 		<filter-class>com.jd.framework.job.console.auth.WwwAuthFilter</filter-class>
@@ -76,7 +75,7 @@
 	</filter-mapping>
 
 	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
+		<welcome-file>WEB-INF/index.html</welcome-file>
 	</welcome-file-list>
 	<error-page>
 		<error-code>403</error-code>

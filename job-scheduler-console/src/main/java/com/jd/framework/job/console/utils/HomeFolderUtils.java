@@ -11,7 +11,7 @@ package com.jd.framework.job.console.utils;
 
 import java.io.File;
 
-public final class HomeFolder {
+public final class HomeFolderUtils {
 
 	private static final String USER_HOME = System.getProperty("user.home");
 
@@ -19,7 +19,7 @@ public final class HomeFolder {
 
 	private static final String CONSOLE_ROOT_FOLDER = ".job-scheduler-console";
 
-	private HomeFolder() {
+	private HomeFolderUtils() {
 	}
 
 	public static String getFilePathInHomeFolder(final String fileName) {

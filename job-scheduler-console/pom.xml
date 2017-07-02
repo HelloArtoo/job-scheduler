@@ -8,8 +8,11 @@
 	</parent>
 	<artifactId>job-scheduler-console</artifactId>
 	<packaging>war</packaging>
-	<name>job-scheduler-console</name>
-	<description>job web console</description>
+	<description>web console</description>
+
+	<properties>
+		<springframework.version>4.1.1.RELEASE</springframework.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -41,10 +44,6 @@
 			<artifactId>jackson-annotations</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>opensymphony</groupId>
 			<artifactId>sitemesh</artifactId>
 		</dependency>
@@ -72,22 +71,36 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
+			<version>${springframework.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
+			<version>${springframework.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
+			<version>${springframework.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
+			<version>${springframework.version}</version>
 			<scope>compile</scope>
+		</dependency>
+
+		<!-- Apache Velocity start -->
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity-tools</artifactId>
 		</dependency>
 
 		<dependency>

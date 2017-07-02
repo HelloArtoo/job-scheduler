@@ -1,0 +1,29 @@
+{
+  "data": [
+    {
+      "jobName": "DailyBuyingPlanJob",
+      "status": "ALL_CRASHED",
+      "cron": "0/5 * * * * * ?",
+      "description": "每天同步基础信息数据至redis中"
+    },
+   	{
+      "jobName": "ReplenishmentJob",
+      "status": "ALL_CRASHED",
+      "cron": "0/5 * * * * * ?",
+      "description": "计算采购建议核心Job"
+    },
+    {
+      "jobName": "VltSyncJob",
+      "status": "ALL_CRASHED",
+      "cron": "0/5 * * * * * ?",
+      "description": "每天同步vlt至redis中"
+    },
+    {
+      "jobName": "InventorySyncJob",
+      "status": "ALL_CRASHED",
+      "cron": "0/5 * * * * * ?",
+      "description": "每天同步实时库存至redis中"
+    }
+  ]
+}
+    

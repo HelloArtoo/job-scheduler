@@ -22,7 +22,7 @@ import com.google.common.base.Optional;
 import com.jd.framework.job.console.domain.RegCenterConfiguration;
 import com.jd.framework.job.console.factory.RegCenterFactory;
 import com.jd.framework.job.console.service.RegCenterService;
-import com.jd.framework.job.regcenter.exception.RegException;
+//import com.jd.framework.job.regcenter.exception.RegException;
 
 @RestController
 @RequestMapping("registry_center")
@@ -61,7 +61,7 @@ public class RegCenterController {
 		try {
 			RegCenterFactory.createCoordinatorRegCenter(regCenterConfig.getZkAddressList(),
 					regCenterConfig.getNamespace(), Optional.fromNullable(regCenterConfig.getDigest()));
-		} catch (final RegException ex) {
+		} catch (final Exception ex) {
 			return false;
 		}
 		return true;

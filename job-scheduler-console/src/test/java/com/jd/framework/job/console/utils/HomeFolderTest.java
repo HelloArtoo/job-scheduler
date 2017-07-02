@@ -21,7 +21,12 @@ public class HomeFolderTest {
 
 	@Test
 	public void assertGetFilePathInHomeFolder() {
-		assertThat(HomeFolder.getFilePathInHomeFolder("test_file"), is(HOME_FOLDER + "test_file"));
+		assertThat(HomeFolderUtils.getFilePathInHomeFolder("test_file"), is(HOME_FOLDER + "test_file"));
+	}
+
+	@Test
+	public void assertGetRegCenterConfigurations() {
+		System.out.println(HomeFolderUtils.getFilePathInHomeFolder("RegCenterConfigurations.xml"));
 	}
 
 }

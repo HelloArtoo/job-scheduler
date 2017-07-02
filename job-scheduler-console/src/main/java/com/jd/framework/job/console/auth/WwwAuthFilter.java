@@ -38,8 +38,10 @@ public class WwwAuthFilter implements Filter {
 
 	private static final String AUTH_PREFIX = "Basic ";
 
+	// default username
 	private String username = "root";
 
+	// default password
 	private String password = "root";
 
 	@Override

@@ -11,14 +11,19 @@ package com.jd.framework.job.console.repository;
 
 import java.io.File;
 
-import javax.annotation.PostConstruct;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import com.jd.framework.job.console.exception.JobConsoleException;
-import com.jd.framework.job.console.utils.HomeFolder;
+import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.stereotype.Repository;
+
+import com.jd.framework.job.console.exception.JobConsoleException;
+import com.jd.framework.job.console.utils.HomeFolderUtils;
+
+@Repository
+@Slf4j
 public abstract class AbstractXmlRepository<E> implements XmlRepository<E> {
 	
 	private final File file;
@@ -28,19 +33,16 @@ public abstract class AbstractXmlRepository<E> implements XmlRepository<E> {
 	private JAXBContext jaxbContext;
 
 	protected AbstractXmlRepository(final String fileName, final Class<E> clazz) {
-		file = new File(HomeFolder.getFilePathInHomeFolder(fileName));
-		this.clazz = clazz;
-	}
-
-	@PostConstruct
-	private void init() {
-		HomeFolder.createHomeFolderIfNotExisted();
-		try {
-			jaxbContext = JAXBContext.newInstance(clazz);
-		} catch (final JAXBException ex) {
-			throw new JobConsoleException(ex);
-		}
-	}
+		log.info("loading XML repository from [{}]", fileName);
+	    file = new File(HomeFolderUtils.getFilePathInHomeFolder(fileName));
+	    this.clazz = clazz;
+	    HomeFolderUtils.createHomeFolderIfNotExisted();
+	    try {
+	        jaxbContext = JAXBContext.newInstance(clazz);
+	    } catch (final JAXBException ex) {
+	        throw new JobConsoleException(ex);
+	    }
+    }
 
 	@Override
 	public synchronized E load() {

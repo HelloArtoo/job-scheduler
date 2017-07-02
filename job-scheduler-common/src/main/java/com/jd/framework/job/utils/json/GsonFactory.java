@@ -40,8 +40,7 @@ public final class GsonFactory {
 	 * @param typeAdapter
 	 *            Gson解析对象适配器
 	 */
-	public static synchronized void registerTypeAdapter(final Type type,
-			final TypeAdapter typeAdapter) {
+	public static synchronized void registerTypeAdapter(final Type type, final TypeAdapter<?> typeAdapter) {
 		GSON_BUILDER.registerTypeAdapter(type, typeAdapter);
 		gson = GSON_BUILDER.create();
 	}
