@@ -13,15 +13,15 @@ public interface FlowJob<T> extends ScheduleJob {
 	/**
 	 * 抓取所需任务数据
 	 * 
-	 * @param segmentContext
+	 * @param segmentContext 分段上下文
 	 * @return T
 	 */
 	List<T> fetchData(SegmentContext segmentContext);
 
 	/**
 	 * 
-	 * @param segmentContext
-	 * @param data
+	 * @param segmentContext 分段上下文
+	 * @param data 实际数据
 	 */
 	void processData(SegmentContext segmentContext, List<T> data);
 

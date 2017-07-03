@@ -234,7 +234,7 @@ public abstract class AbstractJobExecutor {
 	/**
 	 * 子类实现具体处理逻辑
 	 * 
-	 * @param segmentContext
+	 * @param segmentContext 分段上下文
 	 */
 	protected abstract void process(SegmentContext segmentContext);
 }

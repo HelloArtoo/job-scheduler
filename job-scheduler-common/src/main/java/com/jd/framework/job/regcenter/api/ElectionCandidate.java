@@ -9,7 +9,7 @@ public interface ElectionCandidate {
 	/**
 	 * 开始领导状态.
 	 * 
-	 * @throws Exception
+	 * @throws Exception 选举异常
 	 */
 	void startLeadership() throws Exception;
 
