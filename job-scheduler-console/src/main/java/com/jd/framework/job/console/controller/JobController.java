@@ -22,6 +22,7 @@ import com.jd.framework.job.console.domain.job.ExecutionInfo;
 import com.jd.framework.job.console.domain.job.JobBriefInfo;
 import com.jd.framework.job.console.domain.job.JobSettings;
 import com.jd.framework.job.console.domain.job.ServerInfo;
+import com.jd.framework.job.console.domain.view.ResWrap;
 import com.jd.framework.job.console.service.JobAPIService;
 
 @RestController
@@ -32,13 +33,13 @@ public class JobController {
 	private JobAPIService jobAPIService;
 
 	@RequestMapping(value = "jobs", method = RequestMethod.GET)
-	public Collection<JobBriefInfo> getAllJobsBriefInfo() {
-		return jobAPIService.getJobStatisticsAPI().getAllJobsBriefInfo();
+	public ResWrap getAllJobsBriefInfo() {
+		Collection<JobBriefInfo> infos = jobAPIService.getJobStatisticsAPI().getAllJobsBriefInfo();
+		return new ResWrap(infos);
 	}
 
 	@RequestMapping(value = "settings", method = RequestMethod.GET)
 	public JobSettings getJobSettings(final JobSettings jobSettings, final ModelMap model) {
-		model.put("jobName", jobSettings.getJobName());
 		return jobAPIService.getJobSettingsAPI().getJobSettings(jobSettings.getJobName());
 	}
 
@@ -48,12 +49,14 @@ public class JobController {
 	}
 
 	@RequestMapping(value = "servers", method = RequestMethod.GET)
-	public Collection<ServerInfo> getServers(final ServerInfo jobServer) {
-		return jobAPIService.getJobStatisticsAPI().getServers(jobServer.getJobName());
+	public ResWrap getServers(final ServerInfo jobServer) {
+		Collection<ServerInfo> servers = jobAPIService.getJobStatisticsAPI().getServers(jobServer.getJobName());
+		return new ResWrap(servers);
 	}
 
 	@RequestMapping(value = "execution", method = RequestMethod.GET)
-	public Collection<ExecutionInfo> getExecutionInfo(final JobSettings jobSettings) {
-		return jobAPIService.getJobStatisticsAPI().getExecutionInfo(jobSettings.getJobName());
+	public ResWrap getExecutionInfo(final JobSettings jobSettings) {
+		Collection<ExecutionInfo> executionInfo = jobAPIService.getJobStatisticsAPI().getExecutionInfo(jobSettings.getJobName());
+		return new ResWrap(executionInfo);
 	}
 }

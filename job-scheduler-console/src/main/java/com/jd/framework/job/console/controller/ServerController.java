@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jd.framework.job.console.domain.job.ServerBriefInfo;
 import com.jd.framework.job.console.domain.job.ServerInfo;
+import com.jd.framework.job.console.domain.view.ResWrap;
 import com.jd.framework.job.console.service.JobAPIService;
 
 @RestController
@@ -30,13 +31,16 @@ public class ServerController {
 	private JobAPIService jobAPIService;
 
 	@RequestMapping(value = "servers", method = RequestMethod.GET)
-	public Collection<ServerBriefInfo> getAllServersBriefInfo() {
-		return jobAPIService.getServerStatisticsAPI().getAllServersBriefInfo();
+	public ResWrap getAllServersBriefInfo() {
+		Collection<ServerBriefInfo> allServersBriefInfo = jobAPIService.getServerStatisticsAPI()
+				.getAllServersBriefInfo();
+		return new ResWrap(allServersBriefInfo);
 	}
 
 	@RequestMapping(value = "jobs", method = RequestMethod.GET)
-	public Collection<ServerInfo> getJobs(final ServerInfo jobServer, final ModelMap model) {
+	public ResWrap getJobs(final ServerInfo jobServer, final ModelMap model) {
 		model.put("serverIp", jobServer.getIp());
-		return jobAPIService.getServerStatisticsAPI().getJobs(jobServer.getIp());
+		Collection<ServerInfo> infos = jobAPIService.getServerStatisticsAPI().getJobs(jobServer.getIp());
+		return new ResWrap(infos);
 	}
 }

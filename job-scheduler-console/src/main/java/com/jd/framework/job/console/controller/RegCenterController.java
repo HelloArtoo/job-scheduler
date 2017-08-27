@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.common.base.Optional;
 import com.jd.framework.job.console.domain.RegCenterConfiguration;
 import com.jd.framework.job.console.factory.RegCenterFactory;
-import com.jd.framework.job.console.service.RegCenterService;
-//import com.jd.framework.job.regcenter.exception.RegException;
+import com.jd.framework.job.console.service.ERegCenterService;
 
 @RestController
 @RequestMapping("registry_center")
@@ -30,7 +29,7 @@ public class RegCenterController {
 	public static final String REG_CENTER_CONFIG_KEY = "reg_center_config_key";
 
 	@Resource
-	private RegCenterService regCenterService;
+	private ERegCenterService regCenterService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public Collection<RegCenterConfiguration> load(final HttpSession session) {

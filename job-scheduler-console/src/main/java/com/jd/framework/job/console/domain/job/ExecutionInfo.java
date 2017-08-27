@@ -10,6 +10,7 @@
 package com.jd.framework.job.console.domain.job;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import lombok.Getter;
@@ -35,6 +36,18 @@ public final class ExecutionInfo implements Serializable, Comparable<ExecutionIn
 	private Date nextFireTime;
 
 	private Date lastCompleteTime;
+	
+	public String getLastBeginTimeStr() {
+		return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(lastBeginTime);
+	}
+
+	public String getnextFireTimeStr() {
+		return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(nextFireTime);
+	}
+
+	public String getLastCompleteTimeStr() {
+		return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(lastCompleteTime);
+	}
 
 	@Override
 	public int compareTo(final ExecutionInfo o) {

@@ -42,12 +42,12 @@ public final class JobSettingsAPI {
 	public JobSettings getJobSettings(final String jobName) {
 		JobSettings result = new JobSettings();
 		JobNodePathHelper jobNodePath = new JobNodePathHelper(jobName);
-		FactJobConfiguration factJobConfig = FactJobConfigGsonFactory.fromJson(regCenter.get(jobNodePath
-				.getConfigNodePath()));
+		FactJobConfiguration factJobConfig = FactJobConfigGsonFactory
+				.fromJson(regCenter.get(jobNodePath.getConfigNodePath()));
 		String jobType = factJobConfig.getTypeConfig().getJobType().name();
 		buildSimpleJobSettings(jobName, result, factJobConfig);
 		if (JobType.FLOW.name().equals(jobType)) {
-			buildDataflowJobSettings(result, (FlowJobConfiguration) factJobConfig.getTypeConfig());
+			buildFlowJobSettings(result, (FlowJobConfiguration) factJobConfig.getTypeConfig());
 		}
 
 		return result;
@@ -81,17 +81,13 @@ public final class JobSettingsAPI {
 		result.setJobSegmentStrategyClass(factJobConfig.getJobSegmentStrategyClass());
 		result.setDescription(factJobConfig.getTypeConfig().getCoreConfig().getDescription());
 		result.setReconcileIntervalMinutes(factJobConfig.getReconcileIntervalMinutes());
-		result.getJobProperties().put(
-				JobPropertiesEnum.EXECUTOR_SERVICE_HANDLER.getKey(),
-				factJobConfig.getTypeConfig().getCoreConfig().getJobProperties()
-						.get(JobPropertiesEnum.EXECUTOR_SERVICE_HANDLER));
-		result.getJobProperties().put(
-				JobPropertiesEnum.JOB_EXCEPTION_HANDLER.getKey(),
-				factJobConfig.getTypeConfig().getCoreConfig().getJobProperties()
-						.get(JobPropertiesEnum.JOB_EXCEPTION_HANDLER));
+		result.getJobProperties().put(JobPropertiesEnum.EXECUTOR_SERVICE_HANDLER.getKey(), factJobConfig.getTypeConfig()
+				.getCoreConfig().getJobProperties().get(JobPropertiesEnum.EXECUTOR_SERVICE_HANDLER));
+		result.getJobProperties().put(JobPropertiesEnum.JOB_EXCEPTION_HANDLER.getKey(), factJobConfig.getTypeConfig()
+				.getCoreConfig().getJobProperties().get(JobPropertiesEnum.JOB_EXCEPTION_HANDLER));
 	}
 
-	private void buildDataflowJobSettings(final JobSettings result, final FlowJobConfiguration config) {
+	private void buildFlowJobSettings(final JobSettings result, final FlowJobConfiguration config) {
 		result.setStreamingProcess(config.isStreamingProcess());
 	}
 

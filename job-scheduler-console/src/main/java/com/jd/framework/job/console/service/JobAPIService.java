@@ -11,39 +11,28 @@ package com.jd.framework.job.console.service;
 
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Optional;
-import com.jd.framework.job.console.domain.RegCenterConfiguration;
-import com.jd.framework.job.console.factory.JobAPIFactory;
+import com.jd.framework.job.console.repository.RegCenterRepository;
 import com.jd.framework.job.console.service.api.JobOperateAPI;
 import com.jd.framework.job.console.service.api.JobSettingsAPI;
 import com.jd.framework.job.console.service.api.JobStatisticsAPI;
 import com.jd.framework.job.console.service.api.ServerStatisticsAPI;
-import com.jd.framework.job.console.utils.SessionRegCenterConfigUtils;
 
 @Service
 public final class JobAPIService {
 
 	public JobSettingsAPI getJobSettingsAPI() {
-		RegCenterConfiguration regCenterConfig = SessionRegCenterConfigUtils.getRegCenterConfiguration();
-		return JobAPIFactory.createJobSettingsAPI(regCenterConfig.getZkAddressList(), regCenterConfig.getNamespace(),
-				Optional.fromNullable(regCenterConfig.getDigest()));
+		return new JobSettingsAPI(RegCenterRepository.INSTANCE);
 	}
 
 	public JobStatisticsAPI getJobStatisticsAPI() {
-		RegCenterConfiguration regCenterConfig = SessionRegCenterConfigUtils.getRegCenterConfiguration();
-		return JobAPIFactory.createJobStatisticsAPI(regCenterConfig.getZkAddressList(), regCenterConfig.getNamespace(),
-				Optional.fromNullable(regCenterConfig.getDigest()));
+		return new JobStatisticsAPI(RegCenterRepository.INSTANCE);
 	}
 
 	public ServerStatisticsAPI getServerStatisticsAPI() {
-		RegCenterConfiguration regCenterConfig = SessionRegCenterConfigUtils.getRegCenterConfiguration();
-		return JobAPIFactory.createServerStatisticsAPI(regCenterConfig.getZkAddressList(),
-				regCenterConfig.getNamespace(), Optional.fromNullable(regCenterConfig.getDigest()));
+		return new ServerStatisticsAPI(RegCenterRepository.INSTANCE);
 	}
 
 	public JobOperateAPI getJobOperatorAPI() {
-		RegCenterConfiguration regCenterConfig = SessionRegCenterConfigUtils.getRegCenterConfiguration();
-		return JobAPIFactory.createJobOperateAPI(regCenterConfig.getZkAddressList(), regCenterConfig.getNamespace(),
-				Optional.fromNullable(regCenterConfig.getDigest()));
+		return new JobOperateAPI(RegCenterRepository.INSTANCE);
 	}
 }

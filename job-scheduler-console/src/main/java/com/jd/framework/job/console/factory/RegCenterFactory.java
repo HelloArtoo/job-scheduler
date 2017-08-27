@@ -25,7 +25,7 @@ import com.jd.framework.job.regcenter.conf.ZookeeperConfiguration;
 
 /**
  * 
- * 注册中心工厂类
+ * 注册中心工厂类,支持多个注册中心
  * 
  * @author Rong Hu
  * @version 1.0, 2017-7-1

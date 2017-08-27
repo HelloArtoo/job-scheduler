@@ -36,6 +36,9 @@ import org.apache.commons.codec.binary.Base64;
 @Slf4j
 public class WwwAuthFilter implements Filter {
 
+	static final String PATH = Thread.currentThread().getContextClassLoader().getResource("").getPath()
+			+ System.getProperty("file.separator");
+
 	private static final String AUTH_PREFIX = "Basic ";
 
 	// default username
@@ -46,8 +49,7 @@ public class WwwAuthFilter implements Filter {
 
 	@Override
 	public void init(final FilterConfig filterConfig) throws ServletException {
-		String configFilePath = Thread.currentThread().getContextClassLoader().getResource("").getPath()
-				+ System.getProperty("file.separator") + filterConfig.getInitParameter("auth-config");
+		String configFilePath = PATH + filterConfig.getInitParameter("auth-config");
 		Properties props = new Properties();
 		try {
 			props.load(new FileInputStream(configFilePath));
