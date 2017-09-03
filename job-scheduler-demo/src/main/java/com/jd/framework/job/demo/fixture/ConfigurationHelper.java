@@ -20,7 +20,7 @@ public class ConfigurationHelper {
 
 	public static FactJobConfiguration createProductSyncSimpleConfiguration() {
 		JobCoreConfiguration coreConfig = JobCoreConfiguration
-				.newBuilder("SimpleJob-Product-Sync-Datasource", "0/10 * * * * ?", 3)
+				.newBuilder("SimpleJob-Product-Sync-Datasource", "0 20 20 * * ?", 3)
 				.segmentItemParameters("0=6,1=3,2=10").build();
 		SimpleJobConfiguration simpleConfig = new SimpleJobConfiguration(coreConfig,
 				ProductSyncJob.class.getCanonicalName());

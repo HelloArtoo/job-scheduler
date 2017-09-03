@@ -55,26 +55,4 @@ public class DashboardController {
 		
 		return "error";
 	}
-
-	// @RequestMapping(value = "job_detail", method = RequestMethod.GET)
-	// public String jobDetail(@RequestParam final String jobName, @RequestParam
-	// final String jobType,
-	// final ModelMap model) {
-	// model.put("jobName", jobName);
-	// model.put("jobType", jobType);
-	// return "job_detail";
-	// }
-	//
-	// @RequestMapping(value = "server_detail", method = RequestMethod.GET)
-	// public String serverDetail(@RequestParam final String serverIp, final
-	// ModelMap model) {
-	// model.put("serverIp", serverIp);
-	// return "server_detail";
-	// }
-	//
-	// @RequestMapping(value = "overview", method = RequestMethod.GET)
-	// public String overview(final ModelMap model) {
-	// model.put("activeTab", 0);
-	// return "dashboard";
-	// }
 }

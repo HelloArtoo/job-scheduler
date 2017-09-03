@@ -38,25 +38,27 @@ function initJobOperations() {
 
 function doOperation(type) {
 	var msg = getConfirmMsg(type);
-	_confirm("提示", "确认要<font color='red'>" + msg + "</font>该作业吗？", trigger);
+	_confirm("提示", "确认要<font color='red'>" + msg + "</font>全部节点吗？", trigger);
 }
 
 function trigger() {
-	var params = getSelectJobNameParam();
-	if (params == null || params == '') {
-		_alert('请先选中一行数据!');
-		return;
-	}
-
-	var url = getOperationUrl();
-	if(url==''){
-		_alert('失败，未知的操作类型');
+	var jobName = $('#serverJobName').val();
+	if (jobName == null || jobName == '') {
+		_alert('获取作业异常请刷新页面!');
 		return;
 	}
 	
+	var params = {};
+	params.jobName = jobName;
+	var url = getOperationUrl();
+	if (url == '') {
+		_alert('失败，未知的操作类型');
+		return;
+	}
+
 	$.post(url, params, function() {
-		table.draw();
-		_alert('操作成功');
+		reloadPopTable();
+		_alert('操作完成');
 	});
 }
 
@@ -78,7 +80,7 @@ function getConfirmMsg(type) {
 		msg = '触发';
 	} else if (type == 'pause') {
 		msg = '暂停';
-	} else {
+	} else if(type=='resume') {
 		msg = '恢复';
 	}
 	return msg;
@@ -103,6 +105,7 @@ function initServerBtn() {
 			_alert('请先选中一行数据!');
 			return;
 		}
+		$('#serverJobName').val(params.jobName);
 		initServersGrid(params);
 	});
 }
@@ -169,26 +172,145 @@ function initServersGrid(params) {
 	if (popTable != null)
 		popTable.destroy();
 
-	popTable = $('#job-server-detail-table').DataTable({
-		searching : true,
-		paging : false,
-		language : {
-			url : "/resources/js/dataTables/lang/Chinese.lang"
-		},
-		ajax : "job/servers?jobName=" + params.jobName,
-		columns : [ {
-			"data" : "jobName"
-		}, {
-			"data" : "ip"
-		}, {
-			"data" : "hostName"
-		}, {
-			"data" : "status"
-		}, {
-			"data" : "segment"
-		} ]
-	});
+	popTable = $('#job-server-detail-table')
+			.DataTable(
+					{
+						searching : true,
+						paging : false,
+						language : {
+							url : "/resources/js/dataTables/lang/Chinese.lang"
+						},
+						ajax : "job/servers?jobName=" + params.jobName,
+						columns : [ {
+							"data" : "jobName"
+						}, {
+							"data" : "ip"
+						}, {
+							"data" : "hostName"
+						}, {
+							"data" : "status"
+						}, {
+							"data" : "segment"
+						} ],
+						columnDefs : [ {
+							// 定义操作列
+							"targets" : 5,// 操作按钮目标列
+							"data" : null,
+							"render" : function(data, type, row) {
+								
+								return getEditHtml(data);
+							}
+						} ]
+					});
 	$('#jobServerDetail').modal('show');
+}
+
+/**
+ * 行内编辑按钮
+ * @param data
+ * @returns
+ */
+function getEditHtml(data){
+	var params = JSON.stringify(data);
+	//SHUTDOWN
+	if(data.status=='SHUTDOWN'){
+		return "<small class='text-danger'>需重启作业恢复</small>";
+	}
+	
+	//CRASHED
+	if(data.status=='CRASHED'){
+		return "<a href='javascript:void(0);'  class='btn btn-danger btn-xs' title='只有停止运行的作业才能删除(主节点选举中无法移除)' onclick='removeSingleIp("
+		+ params + ")'> 移除</a>";
+	}
+	
+	var html = "<a href='javascript:void(0);'  class='btn btn-primary btn-xs' title='手动触发作业执行' onclick='triggerSingleIp("
+			+ params + ")'> 触发</a>&nbsp;&nbsp;";
+	if(data.status=='PAUSED'){
+		html += "<a href='javascript:void(0);' class='down btn btn-success btn-xs' title='恢复被暂停的作业' onclick='resumeSingleIp("
+			+ params + ")'> 恢复</a>&nbsp;&nbsp;";
+	}else{
+		html += "<a href='javascript:void(0);' class='btn btn-info btn-xs' title='暂停作业的执行' onclick='pauseSingleIp("
+			+ params + ")'> 暂停</a>&nbsp;&nbsp;";
+	}
+	
+	if(data.status=='DISABLED'){
+		html += "<a href='javascript:void(0);' class='btn btn-success btn-xs' title='启用被禁用的作业' onclick='enableSingleIp("
+			+ params + ")'> 启用</a>&nbsp;&nbsp;";
+	}else{
+		html += "<a href='javascript:void(0);' class='btn btn-warning btn-xs' title='禁用作业，不停止进程，会重新进行分段' onclick='disableSingleIp("
+			+ params + ")'> 禁用</a>&nbsp;&nbsp;";
+	}
+	
+	html += "<a href='javascript:void(0);' class='btn btn-danger btn-xs' title='关闭作业会关闭运行的作业，杀死进程' onclick='shutSingleIp("
+		+ params + ")'> SHUT</a>";
+	return html;
+}
+
+function enableSingleIp(serverInfo){
+	var url = "job/enable";
+	$.post(url, serverInfo, function() {
+		_alert('操作完成');
+		reloadPopTable();
+	});
+}
+
+function removeSingleIp(serverInfo){
+	var url = "job/remove";
+	$.post(url, serverInfo, function() {
+		_alert('操作完成');
+		reloadPopTable();
+	});
+}
+
+function disableSingleIp(serverInfo){
+	var url = "job/disable";
+	$.post(url, serverInfo, function() {
+		_alert('操作完成');
+		reloadPopTable();
+	});
+}
+
+function shutSingleIp(serverInfo){
+	var url = "job/shutdown";
+	$.post(url, serverInfo, function() {
+		_alert('操作完成');
+		reloadPopTable();
+	});
+}
+
+function triggerSingleIp(serverInfo) {
+	var url = "job/trigger";
+	$.post(url, serverInfo, function() {
+		_alert('操作完成');
+		reloadPopTable();
+	});
+}
+
+function pauseSingleIp(serverInfo) {
+	var url = "job/pause";
+	$.post(url, serverInfo, function() {
+		_alert('操作完成');
+		reloadPopTable();
+	});
+}
+
+function resumeSingleIp(serverInfo) {
+	var url = "job/resume";
+	$.post(url, serverInfo, function() {
+		_alert('操作完成');
+		reloadPopTable();
+	});
+}
+
+//刷新弹出table
+function reloadPopTable(){
+	popTable.ajax.reload();
+}
+
+
+//刷新table
+function reloadTable(){
+	table.ajax.reload();
 }
 
 function initExecGrid(params) {
@@ -197,7 +319,7 @@ function initExecGrid(params) {
 
 	popTable = $('#job-exec-detail-table').DataTable({
 		searching : true,
-		paging : false,
+		paging : true,
 		language : {
 			url : "/resources/js/dataTables/lang/Chinese.lang"
 		},

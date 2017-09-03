@@ -7,18 +7,10 @@
 		请自行保证作业实现的幂等性
 	</div>
 	<div class="panel-body">
-		<button type="button" class="btn btn-primary" id="triggerBtn" title="立即触发所有ip的作业执行"> 触发</button>
-		<button type="button" class="btn btn-warning" id="pauseBtn" title="暂停所有ip的执行的作业"> 暂停</button>
-		<button type="button" class="btn btn-success" id="resumeBtn" title="恢复所有ip的暂停的作业"> 恢复</button>
-		<div class="btn-group dropup">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> 更多操作 <span class="caret"></span></button>
-			<ul class="dropdown-menu" role="menu">
-				<li><a href="#" id="jobBtn">详细作业配置</a></li>
-				<li><a href="#" id="serverBtn">作业执行节点</a></li>
-				<li><a href="#" id="exeBtn">分段项运行信息</a></li>
-			</ul>
-		</div>
-			
+		<button type="button" class="btn btn-outline btn-primary" id="jobBtn" title="作业详细配置信息"><i class='fa fa-cog'></i> 作业配置</button>
+		<button type="button" class="btn btn-outline btn-primary" id="serverBtn" title="分段项执行信息"><i class='fa fa-desktop'></i> 执行节点</button>
+		<button type="button" class="btn btn-outline btn-primary" id="exeBtn" title="分段项执行信息"><i class='fa fa-life-bouy'></i> 分段项</button>
+		
 		<table id="job-detail-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
 		    <thead>
 		        <tr>
@@ -29,6 +21,12 @@
 		        </tr>
 		    </thead>
 		</table>
+		<small>
+			<span class="text-success">OK - 完美</span>&nbsp;&nbsp;&nbsp;
+			<span class="text-info">PARTIAL_ALIVE - 部分存活</span>&nbsp;&nbsp;&nbsp;
+			<span class="text-warning">DISABLED - 被禁用</span>&nbsp;&nbsp;&nbsp;
+			<span class="text-danger">ALL_CRASHED - 全部崩溃</span>
+		</small>
 	</div>
 </div>
 
@@ -40,8 +38,12 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">执行节点</h4>
+                <input type="hidden" id="serverJobName" value="">
             </div>
             <div class="modal-body">
+            		<button type="button" class="btn btn-primary" id="triggerBtn" title="立即触发所有节点的作业执行"> 全触发</button>
+				<button type="button" class="btn btn-warning" id="pauseBtn" title="暂停所有节点作业"> 全暂停</button>
+				<button type="button" class="btn btn-success" id="resumeBtn" title="恢复所有作业"> 全恢复</button>
             		<table id="job-server-detail-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
 				    <thead>
 				        <tr>
@@ -50,9 +52,18 @@
 				            <th>hostname</th>
 				            <th>状态</th>
 				            <th>分配项</th>
+				            <th>操作</th>
 				        </tr>
 				    </thead>
 				</table>
+				<small>
+					<span class="text-success">READY - 准备</span>&nbsp;&nbsp;&nbsp;
+					<span class="text-info">RUNNING - 运行中</span>&nbsp;&nbsp;&nbsp;
+					<span class="text-warning">DISABLED - 被禁用</span>&nbsp;&nbsp;&nbsp;
+					<span class="text-waring">PAUSED - 被暂停</span>&nbsp;&nbsp;&nbsp;
+					<span class="text-danger">CRASHED - 崩溃</span>&nbsp;&nbsp;&nbsp;
+					<span class="text-danger">SHUTDOWN - 关闭</span>
+				</small>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
