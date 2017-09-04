@@ -176,7 +176,8 @@ function initServersGrid(params) {
 			.DataTable(
 					{
 						searching : true,
-						paging : false,
+						paging : true,
+						bLengthChange : false,
 						language : {
 							url : "/resources/js/dataTables/lang/Chinese.lang"
 						},

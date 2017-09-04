@@ -1,14 +1,92 @@
 <h1 class="page-header">使用说明</h1>
+<p> 
+  	控制台只能控制作业本身是否运行，但不能控制作业进程的启停，因为控制台和作业本身服务器是完全分布式的，控制台并不能控制作业服务器。
+</p>
+<h2>基本原理</h2>
+    <img src="/resources/img/segment.png" class="img-responsive" alt="如何对大作业进行段落化展开">
+<h2>两种加载方式 Java & Spring</h2>
+<h3>Java方式</h3>
+<p>
+	<pre class="pre-scrollable">
+public class JobBootstrap {
+
+    // private static final int ZK_PORT = 2181;
+    // private static final String ZK_CONNECTION = "localhost:" + ZK_PORT;
+    private static final String ZK_SERVERLIST = "192.168.104.242:2181,192.168.104.244:2181,192.168.104.246:2181";
+    private static final String ZK_NAMESPACE = "pbs-union-test";
+    private static final String RDB_DRIVER = "org.h2.Driver";
+    private static final String RDB_URL = "jdbc:h2:mem:job_event_storage";
+    private static final String RDB_USERNAME = "sa";
+    private static final String RDB_PASSWORD = "";
+
+    public static void main(String[] args) {
+
+        CoordinatorRegistryCenter registry = createRegistryCenter();
+        registry.init();
+
+        JobEventConfiguration jobEventConfig = new RdbJobEventConfiguration(createEventDataSource());
+
+        new JobScheduler(registry, createProductSyncSimpleConfiguration(), jobEventConfig, new SyncListener(),
+            new SyncOneOffListener(1000L, 2000L)).init();
+        // new JobScheduler(registry, createProduct2DcFlowConfiguration(),
+        // jobEventConfig).init();
+    }
+
+    private static CoordinatorRegistryCenter createRegistryCenter() {
+
+        return new ZookeeperRegistryCenter(new ZookeeperConfiguration(ZK_SERVERLIST, ZK_NAMESPACE));
+    }
+
+    private static DataSource createEventDataSource() {
+
+        BasicDataSource result = new BasicDataSource();
+        result.setDriverClassName(RDB_DRIVER);
+        result.setUrl(RDB_URL);
+        result.setUsername(RDB_USERNAME);
+        result.setPassword(RDB_PASSWORD);
+        return result;
+    }
+}
+	</pre>
+</p>
+<h3>Spring方式(推荐)</h3>
+<p>
+	<pre class="pre-scrollable">
+public class SpringBootstrap {
+
+    @SuppressWarnings({ "unused", "resource" })
+	public static void main(String[] args) {
+
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:spring-jobs-simple-test.xml");
+        
+    }
+}
+	</pre>
+</p>
+<a href="/resources/files/demo.7z" class="btn btn-primary btn-lg" role="button">下载简单Demo</a>
+
+<h2>如何对作业分段？</h2> 
 <ol>
-    <li>控制台只能控制作业本身是否运行，但不能控制作业进程的启停，因为控制台和作业本身服务器是完全分布式的，控制台并不能控制作业服务器。</li>
+    <li>根据ID分段</li>
+    <li>根据哈希code分段</li>
 </ol>
-<h2>主要功能</h2>
+
+<div class="alert alert-success">
+   	整理思路是可以根据数字型字段进行取模操作，或者分页。(自由拓展，发挥想象)
+</div>
+
+<h2>控制台功能</h2> 
 <ol>
     <li>作业状态查看</li>
     <li>作业配置、执行情况、分段项状态查看</li>
     <li>快捷的修改作业设置</li>
-    <li>控制作业暂停和恢复运行</li>
+    <li>控制作业节点暂停和恢复运行</li>
     <li>作业服务器状态查看</li>
+</ol>
+<h2>亟待实现</h2>
+<ol>
+    <li>任务依赖<br />添加基于任务树依赖结构</li>
+    <li>多样化触发方式<br />添加包括但不仅限于MQ的多种触发方式</li>
 </ol>
 <h2>不支持项</h2>
 <ol>
@@ -17,6 +95,6 @@
 </ol>
 <h2>操作问题</h2>
 <ol>
-    <li>Q：如何添加作业？<br />A：直接在作业服务器启动包含Elastic Job的作业进程即可。</li>
-    <li>Q：如何删除作业？<br />A：关闭所有要删除的作业的运行进程，之后登录Zookeeper手工删除作业名称节点。Zookeeper的目录结构和参见使用文档。</li>
+    <li>Q：如何添加作业？<br />A：直接在作业服务器启动包含Job-Scheduler作业进程。</li>
+    <li>Q：如何删除作业？<br />A：关闭所有要删除的作业的运行进程，之后登录Zookeeper手工删除作业名称节点。(作业管理移除)</li>
 </ol>
