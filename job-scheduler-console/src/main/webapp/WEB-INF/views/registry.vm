@@ -1,0 +1,29 @@
+<h1 class="page-header">注册中心</h1>
+<p class=""> 
+	如果多个应用或环境使用同一个注册中心，为了避免作业运行发生诡异现象，建议使用不同的命名空间进行环境隔离。
+</p>
+
+#if("$!msg"!= "" )
+<div class="alert alert-danger fade in">
+    <a href="#" class="close" data-dismiss="alert">&times;</a>
+    <strong>注册中心连接失败：</strong> $msg.
+</div>
+#end 
+
+<form role="form" action="/switch">
+  <div class="form-group">
+    <label for="name">reg.namespace	<font color="red">*</font></label>
+    <input type="text" class="form-control" name="namespace" placeholder="注册中心的命名空间" required="required">
+  </div>
+  <div class="form-group">
+    <label for="name">reg.servers	<font color="red">*</font></label>
+    <input type="text" class="form-control" name="servers" placeholder="多个地址用英文逗号分隔,例：192.168.101.1:2181,192.168.101.2:2181,192.168.101.3:2181" required="required">
+  </div>
+  <div class="form-group">
+    <label for="name">reg.digest</label>
+    <input type="text" class="form-control" name="digest" placeholder="数字验证，没有则不填">
+  </div>
+  <div class="form-group">
+  	<button type="submit" class="btn btn-primary">保存</button>
+  <div class="form-group">
+</form>

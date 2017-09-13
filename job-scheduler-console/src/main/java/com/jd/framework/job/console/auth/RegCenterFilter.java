@@ -19,6 +19,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import com.jd.framework.job.console.repository.RegCenterRepository;
 import com.jd.framework.job.regcenter.ZookeeperRegistryCenter;
@@ -63,6 +64,7 @@ public final class RegCenterFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
+		HttpServletRequest httpreq = (HttpServletRequest) request;
 		if (RegCenterRepository.INSTANCE == null) {
 			synchronized (RegCenterRepository.class) {
 				try {
@@ -73,14 +75,14 @@ public final class RegCenterFilter implements Filter {
 					CoordinatorRegistryCenter result = new ZookeeperRegistryCenter(zkConfig);
 					result.init();
 					RegCenterRepository.INSTANCE = result;
+					httpreq.getSession().setAttribute("namespace", namespace);
+					httpreq.getSession().setAttribute("servers", servers);
 				} catch (Exception e) {
-					String msg = "Zookeeper connection init failed. please check the [config/reg.properties] and make sure that works fine.";
+					String msg = "zookeeper connection timeout. please check the [config/reg.properties] or maybe you can set below";
 					log.error(msg, e);
 					request.setAttribute("msg", msg);
-					//TODO error is filtered.
-					request.getRequestDispatcher("/error").forward(request, response);
+					request.getRequestDispatcher("/registry").forward(request, response);
 				}
-
 			}
 		}
 		chain.doFilter(request, response);

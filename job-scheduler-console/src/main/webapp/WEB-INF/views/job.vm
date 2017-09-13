@@ -204,7 +204,7 @@
                      <fieldset>
                          <legend>控制器</legend>
                         <div class="form-group">
-                    		 <label class="col-sm-2 control-label" for="streamingProcess">是否streaming（FLOW）</label>
+                    		 <label class="col-sm-2 control-label" for="streamingProcess">streaming(FLOW)</label>
                           <div class="col-sm-2">
                              <div id="streamingProcess" class="btn-group" title="如果流式处理数据, 则fetchData不返回空结果将持续执行作业; 如果非流式处理数据, 则处理数据完成后作业结束">
 			    					<a class="btn btn-primary btn-sm radio-yn" data-toggle="happy" data-title="Y">YES</a>
@@ -220,7 +220,7 @@
                           </div>
                           <label class="col-sm-2 control-label" for="misfire">开启misfire</label>
 	                          <div class="col-sm-2">
-	                             <div id="misfire" class="btn-group" title="只有开启监控作业执行时状态的情况下才可以开启失效转移">
+	                             <div id="misfire" class="btn-group" title="是否开启任务错过重新执行">
 				    					<a class="btn btn-primary btn-sm active" data-toggle="happy" data-title="Y">YES</a>
 				    					<a class="btn btn-default btn-sm notActive" data-toggle="happy" data-title="N">NO</a>
 				    				</div>
@@ -229,7 +229,7 @@
                         <div class="form-group">
 	                          <label class="col-sm-2 control-label" for="failover">开启failover</label>
 	                         	 <div class="col-sm-2">
-	                            		 <div id="failover" class="btn-group" title="是否开启任务错过重新执行">
+	                            		 <div id="failover" class="btn-group" title="只有开启监控作业执行时状态的情况下才可以开启失效转移">
 				    						<a class="btn btn-primary btn-sm active" data-toggle="happy" data-title="Y">YES</a>
 				    						<a class="btn btn-default btn-sm notActive" data-toggle="happy" data-title="N">NO</a>
 				    					</div>

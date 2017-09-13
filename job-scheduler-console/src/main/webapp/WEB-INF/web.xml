@@ -80,7 +80,12 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>regCenterFilter</filter-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/index</url-pattern>
+		<url-pattern>/home</url-pattern>
+		<url-pattern>/job</url-pattern>
+		<url-pattern>/server</url-pattern>
+		<url-pattern>/server/*</url-pattern>
+		<url-pattern>/job/*</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>characterEncodingFilter</filter-name>
@@ -88,7 +93,7 @@
 	</filter-mapping>
 
 	<welcome-file-list>
-		<welcome-file>/home</welcome-file>
+		<welcome-file>home</welcome-file>
 	</welcome-file-list>
 	<error-page>
 		<error-code>403</error-code>

@@ -84,34 +84,35 @@
 			<!-- Top Navigation: Right Menu -->
 			<ul class="nav navbar-right navbar-top-links">
 				<li class="dropdown navbar-inverse"><a class="dropdown-toggle"
-					data-toggle="dropdown" href="#"> <i class="fa fa-bell fa-fw"></i>
+					data-toggle="dropdown" href="#"> <i class="fa fa-registered fa-fw"></i>
+					#if("$!namespace"!= "" )${namespace}#else 'NO AVAILABLE REG CENTER' #end
 						<b class="caret"></b>
+						
 				</a>
 					<ul class="dropdown-menu dropdown-alerts">
 						<li><a href="#">
 								<div>
-									<i class="fa fa-comment fa-fw"></i> 您有一条新消息！（模版） <span
-										class="pull-right text-muted small">4 分钟前</span>
+									<i class="fa fa-desktop fa-fw pull-left"></i> <span class="pull-left text-muted small" title="服务器注册中心">
+									#if("$!servers"!= "" )${servers} #else NO AVAILABLE SERVERS #end</span>
 								</div>
 						</a></li>
 						<li class="divider"></li>
-						<li><a class="text-center" href="#"> <strong>See
-									All Alerts</strong> <i class="fa fa-angle-right"></i>
+						<li><a class="text-center" href="/registry"><strong>切换</strong> <i class="fa fa-exchange"></i>
 						</a></li>
-					</ul></li>
+					</ul>
+					</li>
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
-						系统用户 <b class="caret"></b>
+						系统用户 <!--<b class="caret"></b>-->
 				</a>
-					<ul class="dropdown-menu dropdown-user">
-						<li><a href="#"><i class="fa fa-user fa-fw"></i> 个人信息
-								Profile</a></li>
+					<!--<ul class="dropdown-menu dropdown-user">
+						<li><a href="#"><i class="fa fa-user fa-fw"></i> 个人信息</a></li>
 						<li><a href="#"><i class="fa fa-gear fa-fw"></i> 设置</a>
 						</li>
 						<li class="divider"></li>
 						<li><a href="#"><i class="fa fa-sign-out fa-fw"></i>
 								退出</a></li>
-					</ul></li>
+					</ul>--></li>
 			</ul>
 
 			<!-- Sidebar -->
