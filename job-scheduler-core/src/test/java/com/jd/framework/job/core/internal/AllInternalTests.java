@@ -15,6 +15,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import com.jd.framework.job.core.internal.executor.JobExecutorTest;
 import com.jd.framework.job.core.internal.executor.JobRegistryTest;
+import com.jd.framework.job.core.internal.executor.RegCenterRegistryTest;
 import com.jd.framework.job.core.internal.executor.quartz.JobScheduleControllerTest;
 import com.jd.framework.job.core.internal.executor.quartz.JobTriggerListenerTest;
 import com.jd.framework.job.core.internal.facade.FactJobFacadeTest;
@@ -57,6 +58,7 @@ import com.jd.framework.job.core.internal.service.ServerServiceTest;
 	JobTriggerListenerTest.class,
 	JobExecutorTest.class,
 	JobRegistryTest.class,
+	RegCenterRegistryTest.class,
 	//FACADE
 	FactJobFacadeTest.class,
 	SchedulerFacadeTest.class,

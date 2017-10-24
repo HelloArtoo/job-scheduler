@@ -14,6 +14,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import com.jd.framework.job.core.api.listener.AbstractOneOffJobListenerTest;
+import com.jd.framework.job.core.api.operation.JobOperatorTest;
 import com.jd.framework.job.core.api.strategy.JobSegmentStrategyFactoryTest;
 import com.jd.framework.job.core.api.strategy.impl.AverageAllocationJobSegmentStrategyTest;
 import com.jd.framework.job.core.api.strategy.impl.OdevitySortByNameJobSegmentStrategyTest;
@@ -26,6 +27,7 @@ import com.jd.framework.job.core.api.strategy.impl.RotateServerByNameJobSegmentS
         AverageAllocationJobSegmentStrategyTest.class, 
         OdevitySortByNameJobSegmentStrategyTest.class, 
         RotateServerByNameJobSegmentStrategyTest.class,
+        JobOperatorTest.class,
         JobSchedulerTest.class
     })
 public class AllApiTests {

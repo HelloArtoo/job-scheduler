@@ -92,8 +92,19 @@
 					<ul class="dropdown-menu dropdown-alerts">
 						<li><a href="#">
 								<div>
-									<i class="fa fa-desktop fa-fw pull-left"></i> <span class="pull-left text-muted small" title="服务器注册中心">
-									#if("$!servers"!= "" )${servers} #else NO AVAILABLE SERVERS #end</span>
+									<i class="fa fa-desktop fa-fw pull-left"></i> 
+									<span class="pull-left text-muted small" title="注册中心:${servers}">
+										#if("$!servers"!= "" )
+											#if($servers.length()>38)  
+											    #set($servers=$servers.substring(0,38))
+											    $servers...
+											#else
+											   $!servers
+											#end
+										 #else 
+										 	NO AVAILABLE SERVERS 
+										 #end
+									 </span>
 								</div>
 						</a></li>
 						<li class="divider"></li>
