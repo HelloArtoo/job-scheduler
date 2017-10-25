@@ -12,8 +12,6 @@ package com.jd.framework.job.core.api;
 import java.util.Arrays;
 import java.util.Properties;
 
-import lombok.Setter;
-
 import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -42,6 +40,8 @@ import com.jd.framework.job.executor.facade.JobFacade;
 import com.jd.framework.job.executor.factory.JobExecutorFactory;
 import com.jd.framework.job.regcenter.api.CoordinatorRegistryCenter;
 
+import lombok.Setter;
+
 /**
  * 
  * 作业调度中心，总调度入口
@@ -63,6 +63,8 @@ public class JobScheduler {
 
     private final JobRegistry jobRegistry;
 
+    private final CoordinatorRegistryCenter registryCenter;
+
     public JobScheduler(final CoordinatorRegistryCenter regCenter, final FactJobConfiguration factJobConfig,
                         final ScheduleJobListener... scheduleJobListeners) {
         this(regCenter, factJobConfig, new JobEventBus(), scheduleJobListeners);
@@ -79,8 +81,7 @@ public class JobScheduler {
         jobExecutor = new JobExecutor(regCenter, factJobConfig, scheduleJobListeners);
         jobFacade = new FactJobFacade(regCenter, jobName, Arrays.asList(scheduleJobListeners), jobEventBus);
         jobRegistry = JobRegistry.getInstance();
-        // 注册中心保存
-        RegCenterRegistry.getInstance().addJobRegistryCenter(jobName, regCenter);
+        registryCenter = regCenter;
     }
 
     /**
@@ -95,6 +96,8 @@ public class JobScheduler {
             jobExecutor.getSchedulerFacade(), jobName);
         jobScheduleController.scheduleJob(jobTypeConfig.getCoreConfig().getCron());
         jobRegistry.addJobScheduleController(jobName, jobScheduleController);
+        // 注册中心保存
+        RegCenterRegistry.getInstance().addJobRegistryCenter(jobName, registryCenter);
     }
 
     private JobDetail createJobDetail(final String jobClass) {

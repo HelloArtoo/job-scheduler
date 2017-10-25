@@ -45,6 +45,9 @@ public class RegCenterRegistry {
      */
     public void addJobRegistryCenter(final String jobName, final CoordinatorRegistryCenter registryCenter) {
 
+        if (jobName == null || registryCenter == null)
+            return;
+
         registryMap.put(jobName, registryCenter);
     }
 
